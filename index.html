@@ -1,0 +1,686 @@
+---
+myvar: 5
+---
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ULF</title>
+    <link href="index.css" rel="stylesheet">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  </head>
+
+  <body>
+    <div id="headers">
+      <div id="name">
+        Unscoped Logical Form
+      </div>
+
+      <div id="title">
+        Primal Logical Form for Episodic Logic
+      </div>
+    </div>
+
+
+    <div id="details">
+      <div id="intro">
+        <h2>Unscoped Logical Form, Deeper Semantics, and Inference</h2>
+
+When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
+  $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+
+
+The idea of our unscoped logical form (ULF) was not developed in isolation,
+but rather as part of a more comprehensive approach to deriving deep,
+semantically coherent and inference-enabling representations of
+linguistic content~\cite{hwang1992thesis,hwang1993STA,schubert2000book}. However, since our focus in the proposal
+is parsing into ULF, we begin by providing an intuitive idea of the
+form and meaning of ULFs. We then discuss the advantages and role of ULFs
+in deeper processing, and the kinds of inferences enabled both at the
+ULF level and the deeper level.
+
+{{ page.myvar }}
+
+<h3>ULF type structure</h3>
+<!-- %`````````````````````````````` -->
+
+<!-- % \section{Episodic Logic and Unscoped Logical Form} -->
+<!-- % %`````````````````````````````````````````````````` -->
+<!-- % Episodic Logic (EL) has been under development for many years, -->
+<!-- % and its syntactic and semantic features, the reasoning it enables  -->
+<!-- % (using the {\sc Epilog} inference engine), and large-scale extraction -->
+<!-- % of EL-encoded general factoids from text have been documented in  -->
+<!-- % various publications (e.g., Hwang \& Schubert 1993, 2000; Schubert \& -->
+<!-- % Hwang 2000; Schubert 2000, 2013; Schubert \& Tong 2013; Van Durme  -->
+<!-- % \& Schubert 2008; Morbini \& Schubert 2009, 2013). The greatest -->
+<!-- % remaining challenges in broad usage of EL and {\sc Epilog} in -->
+<!-- % language understanding, dialogue and commonsense reasoning are -->
+<!-- % the creation of a more accurate semantic parser and the acquisition -->
+<!-- % of large amounts of lexical and world knowledge. While our existing -->
+<!-- % work on knowledge acquisition is state-of-the-art (e.g., Van Durme -->
+<!-- % et al.\ 2009, Kim \& Schubert 2016), its accuracy is limited by -->
+<!-- % the quality of semantic parsing; this limitation provides part of  -->
+<!-- % the impetus for the present proposal. -->
+
+The following six examples provide an idea of the language-like 
+syntax of ULFs. The first two are from the Tatoeba database, the next
+three are from <i>The Little Prince</i> (which was used for the first 
+AMR-annotated corpus), and the last is from the Web:
+
+<ol>
+  <li>
+    <span class="ex-sent">Could you dial for me?</span>
+    <blockquote>
+      <pre>
+        <code>
+(((pres could.aux-v) you.pro ((dial.v {ref1}.pro) 
+                              (adv-a (for.p me.pro)))) ?)
+        </code>
+      </pre>
+    </blockquote>
+  <li>
+    <span class="ex-sent">If I were you I would be able to succeed.</span>
+    <blockquote>
+      <pre>
+        <code>
+((if.ps (I.pro ((cf were.v) (= you.pro))))
+ (I.pro ((cf will.aux-s) 
+         (be.v (able.a (to succeed.v)))))) 
+        </code>
+      </pre>
+    </blockquote>
+  <li>
+    <span class="ex-sent">He neglected three little bushes</span>
+    <blockquote>
+      <pre>
+        <code>
+(he.pro ((past neglect.v) 
+         (three.d (little.a (plur bush.n)))))
+        </code>
+      </pre>
+    </blockquote>
+  <li>
+    <span class="ex-sent">Flowers are weak creatures</span>
+    <blockquote>
+      <pre>
+        <code>
+((k (plur flower.n)) ((pres be.v) 
+                      (weak.a (plur creature.n))))
+        </code>
+      </pre>
+    </blockquote>
+  <li>
+    <span class="ex-sent">My drawing is not a picture of a hat</span>
+    <blockquote>
+      <pre>
+        <code>
+((my.d drawing.n) ((pres be.v) not.adv-s
+                   (a.d (picture-of.n (a.d hat.n)))))
+        </code>
+      </pre>
+    </blockquote>
+  <li>
+    <span class="ex-sent">Very few people still debate the fact that the earth is heating up</span>
+    <blockquote>
+      <pre>
+        <code>
+(((fquan (very.adv-a few.a)) (plur person.n))
+    (still.adv-s (debate.v
+       (the.d (n+preds fact.n 
+                       (= (that ((the.d |Earth|.n) 
+                                 ((pres prog) heat_up.v)))))))))
+        </code>
+      </pre>
+    </blockquote>
+
+</ol>
+
+<p>
+As can be seen, ULF structure quite closely reflects phrase structure; 
+and the type tags of atomic constituents, such as <tt>.pro, .v, .p, .a, 
+.d, .n,</tt> etc., are intended to echo the part-of-speech origins of these 
+constituents, such as <i>pronoun, verb, preposition, adjective, determiner,
+  noun,</i> etc., respectively. Originally, ULFs contained some \(\lambda\)-abstracts,
+for example to form a conjunctive predicate from postmodified nouns,
+but we have introduced syntactic sugar elements that relieve annotators
+from coding such abstracts. An example is seen in (6): The <tt>n+preds</tt>
+macro takes a noun and one or more predicates as complements, and these
+are expanded into a \(\lambda\)-abstracted conjunctive predicate in
+postprocessing. As a result, ULFs are relatively amenable to human
+creation and intuitive interpretation. Moreover, as mentioned in the 
+Introduction, the proximity to surface structure enables NLog-like
+inference and more.
+
+<p>
+But then isn't parsing into ULF just another variant of syntactic
+parsing? The essential difference is that the type tags correspond
+to broad semantic categories (certain types of model-theoretic 
+functions), and as such enable us to ensure that the type structure 
+of ULFs -- their operator-operand combinations -- are semantically 
+coherent. Richard Montague's profoundly influential work can be 
+viewed as demonstrating the crucial importance of paying attention
+to the semantic types of words and phrases, and that doing so leads 
+to a view of language as very close to logic; as a result it lends
+itself to inference, at least to the extent that we can resolve --
+or are prepared to tolerate -- various forms of ambiguity, 
+context-dependence and indexicality.
+
+<p>
+Our semantic types are not as high-order as Montague's, nor as "rigid"
+as Montague's, but they suffice for maintaining type coherence. In
+particular, quantification is first-order, i.e., it iterates over 
+individual entities, not over predicates, etc.\ -- though through
+reification of predicate meanings and sentence meanings, we can "talk
+about" kinds of things, kinds of actions, propositions, etc., not just
+ordinary objects.
+
+<p>
+As soon as we take semantic types seriously in ULFs like the above,
+we see that certain type-shifting operators are needed to maintain type
+coherence. For example, in sentence (1) the phrase <i>for me</i> is coded
+as <tt>(adv-a (for.p me.pro))</tt>, rather than simply <tt>(for.p me.pro)</tt>.
+That is because it is functioning here as a <i>predicate modifier</i>,
+semantically operating on the verbal predicate <tt>(dial.v {ref1}.pro)</tt>
+(<i>dial a certain thing</i>). Without the <tt>adv-a</tt> operator the 
+prepositional phrase is just a 1-place predicate. Its use as a predicate 
+is apparent in contexts like <i>"This puppy is for me"</i>. Note that
+semantically the 1-place predicate <tt>(for.p me.pro)</tt> is formed by 
+applying the 2-place predicate <tt>for.p</tt> to the (individual-denoting) 
+term <tt>me.pro</tt>. (Viewing $n$-place predicates as successively applied 
+to their arguments, each time reducing the adicity, is in keeping with 
+the traditions of Sch\"{o}nfinkel, Church, Curry, Montague, and others -- 
+hence "curried" predicates.) If we apply <tt>(for.p me.pro)</tt> to another 
+argument, such as <tt>|Snoopy|</tt> (the name of a puppy), we obtain a truth 
+value. So semantically, <tt>adv-a</tt> is a <i>type-shifting operator</i>
+of type (<i>predicate</i> $\rightarrow$ (<i>predicate</i> $\rightarrow$
+<i>predicate</i>))), where the predicates are 1-place and thus of type 
+(<i>entity</i> $\rightarrow$ <i>truth value</i>). Of course, the name 
+<tt>adv-a</tt> is intended to suggest "adverbial", in recognition of the 
+grammatical distinction between predicative and adverbial uses of 
+prepositional phrases.
+
+<p>
+In the preceding discussion we glossed over <i>intensionality</i>. For example,
+(2) is a counterfactual conditional, and the consequent clause <i>"I
+  would be able to succeed"</i> is not evaluated in the actual world, but
+in a possible world where the (patently false) antecedent is imagined
+to be true. ULF and deeper LFs derived from it are based on a semantics
+where sentences are evaluated in <i>possible situations (episodes)</i>,
+whose maxima are possible worlds. Details about syntactic forms and 
+semantic types in our approach to LF have been provided in many past 
+publications~\cite{hwang1992thesis,hwang1994ICTL,schubert2000book}.
+
+<p>
+There is scarcely space to say more about types in ULF here, but we note some 
+further type-shifting operators in the examples: '<tt>to</tt>' (synonym: <tt>ka</tt>)
+in (2) shifts a verbal predicate to a <i>kind (type) of action or attribute</i>,
+which is an abstract individual; '<tt>k</tt>' in (4) shifts a nominal predicate
+to a <i>kind</i> of thing (so the subject here is the abstract kind,
+flowers, whose instances consist of sets of flowers; and `<tt>that</tt>' in (6)
+produces a reified <i>proposition</i> (again an abstract individual) from
+a sentence meaning. Through these type shifts, we are able to maintain a
+simple, classical view of predication, while allowing greater expressivity
+than the most widely employed logical forms, for example enabling generalized 
+quantification (as in (6)), modification, reification, and other forms of 
+intensionality.
+
+<p>
+The positioning of <tt>(adv-a (for.p me.pro))</tt> within the verbal predicate
+it modifies, rather than in prefix-operator position, already indicates
+a certain looseness in the ULF syntax, as opposed to the rigidity of formal
+logic. This is unproblematic because we restrict the way operators may
+combine with operands so that type consistency is assured  -- and in fact 
+in subsequent processing, any <tt>(adv-a (...))</tt> constituents of a verbal 
+predicate are moved so as to immediately precede that predicate. There
+are a number of further kinds of looseness in ULFs, but we defer further
+discussion to the next subsection.
+
+<p>
+Finally we note a general concern that might be raised about ULFs.
+Since they largely conform with surface syntax, they are clearly
+language-specific. Isn't the point of semantics to get at the
+deeper meanings underlying the surface forms or language, and shouldn't
+these be somewhat uniform across languages? Our answer is two-fold:
+First, from a semantic perspective, the ULFs for different languages
+will have certain essential commonalities, namely, means to express
+predication, truth-functional and other connectives, generalized
+quantifiers, predicate and sentence modification, predicate and 
+sentence reification, implicit and explicit reference to events/
+situations, comparatives, and a few other devices. Surface order is
+less important than these semantic commonalities. Second, we do
+think that sentence meanings should be factored into (as far as 
+possible) minimal, separately usable, canonical propositions. This 
+seems plausible both from speculations in cognitive science about 
+"Mentalese", and from a practical perspective, since canonicalization
+ensures that connections between ideas can be quickly recognized and 
+used for inference. A glimpse of the canonicalization process was
+already seen above for the sentence <i>"The boy wants to go"</i>.
+Of course the meaning of sentences "in the wild" can be much more 
+complex and subtle. Our hypothesis is that we can conquer those 
+complexities effectively by starting with a type-coherent surface form, 
+and systematically deriving canonical forms, bringing to bear many 
+different kinds of influential factors. The next subsection elaborates 
+on this view.
+
+<h2>Role of ULF in comprehensive semantic interpretation</h2>
+<!-- %```````````````````````````````````````````````````````````````` -->
+<!-- % Points:  -->
+<!-- %   How ULFs encode possible meanings: -->
+<!-- %  -  The set of unscoped elements corresponds to a fixed set of possibilities; -->
+<!-- %  -  Deindexing of tense, temporal adverbials leads to a fixed set of -->
+<!-- %     possible temporal relationships; (Hwang & Schubert 1994) -->
+<!-- % -->
+<!-- %   Linguistic phrase structure provides important clues to disambiguation -->
+<!-- %   of scope, coreference, elided material, presupposed material, temporal -->
+<!-- %   relations. By retaining the essential structure of the input, ULFs  -->
+<!-- %   support use of these cues (whether by algorithmic or ML methods). -->
+<!-- %   E.g.: The possible positions for unscoped pres/past/quantifiers/and/or -->
+<!-- %         are unambiguously determined by their context of appearance in -->
+<!-- %         ULF (see Schubert & Pelletier 1982). Further, structural properties -->
+<!-- %         bias choices of these scopes (order of appearance, modal embedding, -->
+<!-- %         relative wide-scoping tendencies) -\- e.g., Hurum; Hafezi-Manshadi -->
+<!-- %   E.g.: Intrasentential anaphora resolution is known to be constrained by  -->
+<!-- %         C-command relations and reflexive binding constraints; ULF preserves  -->
+<!-- %         the relevant information; -->
+<!-- %   E.g., E.g., Ellipsis resolution depends on structural context: "She has  -->
+<!-- %         as many books as I". -->
+<!-- % -->
+<!-- %   Subsequent scoping and deindexing, followed by canonicalization (Skolemization, -->
+<!-- %   conjunction splitting, etc.) typically leads to sets of predications not -->
+<!-- %   unlike those often posited in approaches that seek to derive canonical -->
+<!-- %   LFs directly from surface strings. Perhaps human language understanding also -->
+<!-- %   leads to canonical "Mentalese" forms, and perhaps the appeal of semantic -->
+<!-- %   representations in terms of "triples" derives from this. But we contend -->
+<!-- %   that starting with a surface-oriented representations and working towards -->
+<!-- %   a canonical, factored representation offers compelling advantages. -->
+<!-- % -->
+<!-- % Another point: Retaining some ambiguity in sentence LFs is desirable, even -->
+<!-- %   necessary, because complete disambiguation often requires a broader context.  -->
+<!-- %   E.g., Resolving indexicality and deixis (I, you, this, here, now, ...) -->
+<!-- %         is clearly context dependent; also, -->
+<!-- %         whether a pronoun corefers inter- or intrasententially depends -->
+<!-- %         on prior sentences. E.g., "The boy thought he was going to die" -->
+<!-- %         may well mean the boy thought this about himself, but not if the  -->
+<!-- %         preceding sentence is "Billy's dad was badly wounded". -->
+<!-- %   E.g., Word senses depend on broader context. For example "car" can -->
+<!-- %         mean automobile throughout one lengthy passage, and railroad car -->
+<!-- %         in another (or even "first element" in Lisp documentation). -->
+<!-- %   E.g., Some utterances are radically ambiguous without prior context, -->
+<!-- %         such as "How about you?", with prior statements "I'm a sophomore", -->
+<!-- %         or "I like seafood". -->
+<p>
+ULFs are underspecified -- loosely structured and ambiguous -- in 
+several ways. But their surface-like form, and the type structure they
+encode, make them well-suited to reducing underspecification, both 
+using well-established linguistic principles and machine learning (ML)
+techniques that exploit the distributional properties of language.
+Many examples of how ULFs lead systematically to (alternative)
+disambiguated representations can be found in the references cited
+at the beginning.  The scope of this proposal is not expected to 
+encompass much of this further processing, but we want to reiterate 
+some reasons for regarding ULFs as a suitable basis.
+<p>
+We have developed and applied heuristic algorithms that resolve scope 
+ambiguities and make event structure explicit. Though these algorithms 
+are not sufficiently reliable, they set a baseline for future work 
+on disambiguation aided by ML techniques. The following points address
+the utility of ULFs as preliminary structures enabling systematic
+reduction of underspecification. 
+<p>
+<b> Word sense disambiguation (WSD):</b> One obvious form of 
+underspecification is word sense ambiguity. But while, 
+for example, <tt>(weak.a (plur creature.n))</tt> in (4) does 
+not specify which of the dozen WordNet senses of <i>weak</i> or 
+three senses of <i>creature</i> is intended here, the type structure
+is perfectly clear: A predicate modifier is being applied to a nominal
+predicate. Certainly standard statistical WSD techniques~\cite{jurafsky2009book} 
+can be applied to ULFs, but this should
+not in general be done for isolated sentences, since word senses
+tend to be used consistently over longer passages. We should mention
+here that adjectives appearing in predicative position (e.g., <i>able</i> 
+in (2)) or in attributive position (e.g., <i>little</i> in (3)) are
+type-distinct, but ULF leaves this distinction to further processing, 
+since the semantic type of an adjective is unambiguous from the way 
+it appears in ULF.
+<p>
+<b> Predicate adicity:</b> A slightly subtler issue is the adicity of 
+predicates. We do not assume unique adicity of word-derived predicates 
+such as <tt>run.v</tt>, since such predicates can have intransitive, simple 
+transitive and other variants (e.g., <i>run quickly</i> vs. <i>run 
+  an experiment</i>). But adicity of a predicate in ULF is always clear from 
+the syntactic context in which it has been placed -- we know that it has 
+all its arguments in place, forming a truth-valued formula, when an 
+argument (the "subject") is placed on its left, as in English. 
+<p>
+<b> Scope ambiguity:</b> While some of the underspecification 
+in ULFs is deterministically resolvable, <i>unscoped</i> 
+constituents can generally "float" to more than one possible 
+position. The three types of unscoped elements in ULF are 
+<i>determiner phrases</i> derived from noun phrases (such as <i>very 
+  few people</i> and <i>the Earth</i> in (6)), the tense operators <tt>pres</tt> 
+and <tt>past</tt>, and the coordinators <tt>and.cc, or.cc</tt> and some 
+variants of these.  The positions they can "float" to in postprocessing 
+are always pre-sentential, and determiner phrases leave behind a variable
+that is then bound at the sentential level. This view of scope
+ambiguity was first developed in~\cite{schubert1982CL} and
+subsequently elaborated in~\cite{hurum1986AI} and reiterated in
+various publications by Hwang and Schubert. The accessible positions
+are constrained by certain restrictions well-known in linguistics. For 
+example, in the sentence <i>"Browder ... claims that every oligarch 
+  in Russia was forced to give Putin 50 percent of his wealth"</i>, there 
+is no wide-scope reading of <i>every</i>, to the effect <i>"For every 
+  oligarch in Russia, Browder claims ... etc."</i>; the subordinate clause 
+is a "scope island" for strong quantifiers like <i>every</i> (as well 
+as for tense). The important point here is that ULF allows exploitation
+of such structural constraints, since it still reflects the surface
+syntax. Now, firm linguistic constraints still leave open multiple 
+scoping possibilities, and many factors influence preferred choices, with
+surface form (e.g., surface ordering) playing a prominent role~\cite{manshadi2013ACL}. So again the proximity of ULF to surface syntax 
+should be helpful in applying ML techniques to determining preferred
+scopings. <!-- % QUICK EXAMPLE OF SCOPING ALGORITHM OUTPUT? -->
+
+<p>
+<b> Anaphora:</b> Another important aspect of disambiguation is coreference
+resolution. Again there are important linguistic constraints ("binding
+constraints") in this task. For example, in <i>"John said that he was
+  robbed", he</i> can refer to John; but this is not possible in <i>"He
+  said that John was robbed"</i>, because in the latter, <i>he</i> C-commands
+<i>John</i>, i.e., in the phrase structure of the sentence, it is a sibling
+of an ancestor of <i>John</i>. ULF preserves this structure, allowing use
+of such constraints. Preservation of structure also allows application
+of ML techniques~\cite{poesio2016book}, but again this should be done
+over passages, not individual sentences, since coreference "chains"
+can span many sentences.
+When coreference relations have been established as far as possible
+and operators have been scoped, the resulting LFs are quite
+close in form to first-order logic, except for incorporating the
+additional expressive devices (generalized quantifiers, modification,
+attitudes, etc.) that we have already mentioned and illustrated.
+In our writings we call this the <i>indexical logical form</i>, or
+ILF.
+
+<p>
+<b> Event/situation structure:</b> The most important aspect of logical form 
+that remains implicit in ILF is event/situation structure. Much of our 
+past work has been concerned with the principles of <i>de-indexing</i>, 
+i.e., making events and situations -- <i>episodes</i> in our terminology -- 
+explicit~\cite{hwang1992thesis,hwang1994ICTL,schubert2000book2}. The relationship 
+to Davidsonian event semantics and Reichenbachian tense-aspect theory is 
+explained in these references. Our compositional approach to tense-aspect 
+processing leads to construction of a so-called <i>tense tree</i>, and yields 
+multiple, related reference events for sentences such as <i>"By 8pm  tonight, 
+  all the employees will have been working for 15 hours straight".</i>
+The relevant point here is that the compositional constuction and use of
+tense-trees is possible only if the logical form being processed reflects
+the original clausal structure -- as ULF and ILF indeed do.
+
+<!-- % Our approach to the semantics of tense, aspect, and temporal adverbials differs  -->
+<!-- % from the traditional Davidsonian approach in that it associates episodes  -->
+<!-- % not only with atomic predications, but also with negated, quantified,  -->
+<!-- % and other complex sentences. For example, in ELF there is an explicit -->
+<!-- % referent available for the phrase <i>this situation</i> in sentence -->
+<!-- % pairs such as <i>"No rain fell for two months. <u>This situation</u> -->
+<!-- % led to crop failures"</i>, or <i>"Every theater patron was trying to -->
+<!-- % exit through the same door. <u>This situation</u> led to disaster".</i> -->
+<!-- % In addition, we regard perfect and progressive aspect, via operators -->
+<!-- % <tt>perf} and <tt>prog}, together with the tense operators <tt>pres</tt> -->
+<!-- % and <tt>past} and modal auxiliary <tt>will.aux-s</tt>, as contributing  -->
+<!-- % to temporal structure compositionally, rather than by enumeration of -->
+<!-- % possible tense-aspect combinations. The compositional process is mediated -->
+<!-- % by <i>tense trees</i> systematically determined by ILF structure. The -->
+<!-- % process deposits, and makes reference to, episode tokens at tense tree -->
+<!-- % nodes, relating the various times/episodes referred to in sentences -->
+<!-- % such as <i>By 8pm tonight, all the employees will have been working -->
+  <!-- % for 15 hours straight".</i> Details are provided in the publications above, -->
+<!-- % especially (Hwang \& Schubert 1994).  -->
+
+<p>
+<b> Canonicalization:</b> Finally, canonicalization of ELF into "minimal" 
+propositions, with top-level Skolemization (and occasionally 
+$\lambda$-conversions), is straightforward. A simple example was seen 
+in the Introduction, and some more complex examples are 
+shown in prior publications~\cite{schubert2000book,schubert2014SP,schubert2015AAAI}. 
+
+<p>
+When episodes have been made explicit (and optionally, canonicalized), 
+the result is <i>episodic logical form</i> (ELF); i.e., we have sentences 
+of Episodic Logic, as described in our previously cited publications. 
+These can be employed in our {\sc Epilog} inference engine for reasoning 
+that combines linguistic semantic content with world knowledge. 
+A variety of complex {\sc Epilog} inferences are reported in~\cite{schubert2013LiLT}, 
+and \cite{morbini2011chapter} contained examples of self-aware metareasoning. 
+Further in the past, {\sc Epilog} reasoned about snippets from the Little Red 
+Riding Hood story: <i>If the wolf tries to eat LRRH when there are 
+woodcutters nearby, what is likely to happen?</i>"; answer chain: <i>
+The wolf would attack and try to subdue LRRH; this would be noisy; 
+the woodcutters would notice, and see that a child is being attacked; 
+that is a wicked act, and they would rush to help her, and punish or 
+kill the wolf</i>~\cite{hwang1992thesis,schubert2000book}. However, the 
+scale of such world-knowledge-dependent reasoning has been limited
+by the difficulty of acquiring large amounts of inference-enabling 
+knowledge. (The largest experiments, showing the competitiveness
+of {\sc Epilog} against state-of-the art theorem provers were limited
+to formulas of first-order logic~\cite{morbini2009LFCR}.) In the
+proposed work we therefore focus on inferences that are important but
+not heavily dependent on world knowledge.
+
+<!-- % The potential of EL reasoning has been extensively demonstrated, making  -->
+<!-- % the prospect of effectively mapping language to EL an attractive one.  -->
+<!-- % The most complete [language $\rightarrow$ reasoning] system built so  -->
+<!-- % far (2012-14) was a system for interpreting captions of family photos  -->
+<!-- % (e.g., <i>Alice, with her two grandmothers at her graduation party</i>),  -->
+<!-- % then aligning the caption-derived knowledge with image-derived data -->
+<!-- % about individuals' apparent age, gend, hair color, eye-wear, etc.,  -->
+<!-- % merging the knowledge, and then inferentially answering questions -->
+<!-- % (<i>Who graduated?</i>). Unpublished reports (to ONR) on this work -->
+<!-- % exist, but further development has been hampered by difficulties in -->
+<!-- % obtaining large collections of captioned family photos for scaling up. -->
+
+<p>
+Thus ULFs comprise a "primal" logical form whose resemblance to phrase
+structure and whose constraints on semantic types provide a basis for
+the multi-faceted requirements of deriving less ambiguous, nonindexical,
+canonical LFs suitable for reasoning. However, as we have pointed out,
+ULFs are themselves inference-enabling, and this will be important for
+our evaluation plan.
+
+<h2>Inference with ULFs</h2>
+<!-- %``````````````````````````````` -->
+
+<!-- % I'M CONSIDERING KEEPING (SOME OF) THIS: -->
+<!-- % As justified in detail in (Schubert 2000), ULF and EL sharply distinguish  -->
+<!-- % propositions from events (more generally episodes). Propositions  -->
+<!-- % are abstract, true or false <i>information</i> objects and as such can  -->
+<!-- % be <i>asserted, known, believed, disputed, etc.</i>; whereas events are  -->
+<!-- % surely real, temporal entities in the world, often with causal consequences  -->
+<!-- % -/- without them, there would be no natural or social world as we know it.  -->
+<!-- % Consider for example,\\[.03in] -->
+<!-- % \ind <i>Molly barked last night; <u>that</u> woke up the neighbors.</i>\\ -->
+<!-- % \ind <i>Molly barked last night; <u>that</u>'s what the neighbors assert.</i>\\[.03in] -->
+<!-- % Note that propositions don't wake neighbors, but events certainly can; -->
+<!-- % and events can't be asserted, but propositions certainly can. Events -->
+<!-- % can have temporal parts at any scale, and can physically involve many -->
+<!-- % entities, but propositions cannot. Propositions and events are easily  -->
+<!-- % confused because they are closely related: NL sentences <i>express</i>  -->
+<!-- % propositions and at the same time <i>characterize</i> events or situations.  -->
+<!-- % But an adequate semantic representation must distinguish them, thus  -->
+<!-- % providing distinct referents for the two instances of the anaphoric  -->
+<!-- % <i>that</i> in the above sentences. For a full discussion see (Schubert -->
+<!-- % 2000) and also (Zucchi 1989). In general, propositions believed (or rejected) -->
+<!-- % by people are central to explaining the <i>reasons</i> for their actions,  -->
+<!-- % while events interact <i>causally</i>. In EL, the propositional referent  -->
+<!-- % in the second sentence is provided simply by applying the sentence reifying  -->
+<!-- % operator to the meaning of the sentence. The next paragraph explains how  -->
+<!-- % the event (episode) referent in the first sentence is obtained. -->
+
+<p>
+An important insight of NLog research is that language can be used
+directly for inference, requiring only phrase structure analysis 
+and upward/downward entailment marking (polarity) of phrasal contexts. 
+This means that NLog inferences are <i>situated</i> inferences, i.e.,
+their meaning is just as dependent on the utterance setting and discourse
+state as the linguistic ``input" that drives them.
+
+<p>
+This insight carries over to ULFs, and provides a separate justification
+for computing ULFs, apart from their utility in the process of deriving
+deep, context-independent, canonicalized meaning representations from
+language. Our evaluation of the English-to-ULF parser that we are proposing
+to develop will be formulated in terms of certain classes of situated
+inferences enabled by ULFs. 
+
+<p>
+ULFs in principle provide a more reliable and more general basis 
+for situated inference than mere phrase structure, because of the coherent 
+semantic type structure they encode. Greater reliability also leads to 
+the possibility of spontaneous forward inferencing, as opposed to 
+inference guided by propositions to be confirmed or disconfirmed (as 
+in most textual entailment and NLog studies to date). This is important, 
+because human language understanding seems to involve continuous forward 
+inferencing. As a simple example, if according to your paper or newsfeed 
+<i>"Police reported that the vehicle struck several cars"</i>, you will 
+conclude that the reported event almost certainly happened, and further, 
+that the cars involved were all damaged. Now, the first of these inferences 
+requires only a small amount of knowledge about communication, to the 
+effect that <i>reporting</i> (in your preferred media) typically involves 
+reporting of facts; whereas the latter depends on very specific world 
+knowledge. Our demonstration of ULF utility in forward inference will
+focus on the former kinds of inference (and related ones), since 
+accumulation of sufficient world knowledge for enabling the latter
+kinds of inference remains out of reach in the short run.
+
+<p>
+Here, briefly, are some kinds of inferences we can expect ULFs to support:
+<ul>
+ <li> <i>NLog inferences based on generalizations/specializations</i>.
+   For example, <i>"Every NATO member sent troops to Afghanistan"</i>, 
+   together with the knowledge that France is a NATO member and that 
+   Afghanistan is a country entails that <i>France sent troops to
+   Afghanistan</i> and that <i>France sent troops to a country</i>.
+   Such inferences are within the scope of NLog-based and ULF-based 
+   methods, and can help in finding inference paths to candidate 
+   entailments; but they will not be our focus as they rarely seem 
+   worthwhile as spontaneous forward inferences from sentences in
+   discourse (we are particularly interested in dialogue settings).
+ <li> <i>NLog inferences based on implicatives</i>. For example, <i>"She
+   managed to quit smoking"</i> entails that <i>"She quit smoking"</i> (and
+   the negation of the premise leads to the opposite conclusion). We
+   already demonstrated such inferences in our framework for various
+   headlines~\cite{stratos2011KEOD}, such as the inference from
+   <i>Oprah is shocked that Obama gets no respect</i> (Fox News 2011) 
+   to <i>Obama gets no respect</i>. Such inferences are surely important
+   -- and immediate -- in language understanding, and will be included
+   in our evaluations.
+ <li> <i>Inferences based on attitudinal and communicative verbs</i>.
+   Some such inferences, for instance for <i>knowing-that</i> and <i>
+     finding-out-that</i>, fall under the previous heading, but others do
+   not. For example, <i>"John denounced Bill as a charlatan"</i>
+   entails that <i>John probably believes that Bill is a charlatan</i>,
+   that <i>John asserted to his listeners (or readers) that Bill is 
+     a charlatan</i>, and that <i>John wanted his listeners (or readers)
+     to believe that Bill is a charlatan</i>. Such inferences would be hard
+   to capture within NLog, since they are partially probabilistic,
+   require structural elaboration, and depend on constituent types.
+   <!-- % [GK]: My guess is that the readers won't necessarily grasp why this isn't part of NLog anyway. -->
+   <!-- %For example, the variant <i>"Mary denounced Bill as well"</i> might  -->
+   <!-- %lead to the inference that <i>Mary believes that Bill is well</i>, -->
+   <!-- %if <i>as well</i> is not recognized as a verb phrase adverbial. -->
+ <li> <i>Inferences based on counterfactuals</i>. For example, <i>"If
+   I were rich, I would pay off your debt"</i> and <i>"I wish I were rich"</i>
+   both implicate that <i>the speaker is not rich</i>. This depends 
+   on recognition of the counterfactual form, which is distinguished
+   in ULF.
+ <li> <i>Inferences from questions and requests</i>. For example, <i>
+   "When are you getting married"</i> enables the inference that the 
+   addressee will get married (in the foreseeable future), and that 
+   the questioner wants to know the expected date of the event, and
+   expects that the addressee probably knows the answer, and will supply
+   it. Similarly an apparent request such as <i>"Could you close the 
+     door?"</i> implies that the speaker wants the addressee to close the 
+   door, and expects he or she will do so. There are subtleties in the
+   distinction between questions and requests that can be captured 
+   in ULF and made use of.
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--
+        <div class="deets">
+          The ULF Project is aimed at learning a parser for primal logical forms of Episodic Logic (EL)~\ref{..} -- called unscoped logical forms (ULF) -- by obtaining a moderately large hand annotated corpus and training on statistical parser with guidance from knowledge about the formal restrictions of ULFs.
+        
+          
+          <p>
+          </p>
+        </div>
+        -->
+      </div>
+
+      <h2>Online Resources</h2>
+      <ul>
+        <li>
+          <a href="http://onlineannotator-env2.us-east-2.elasticbeanstalk.com/select_annotator.php">ULF and Inference Annotators</a><br>
+          Annotators for my research project on annotating and demonstrating the inference capabilities of underspecified episodic logic.  If you're interested in getting involved please let me know!  I'm always looking for more collaborators on this project. <br>
+          <b>Related resources:</b>
+          <a href="el-annotator/ulf_ann/docs/ann_doc.pdf">ULF Annotation Guidelines</a>,
+          <a href="el-annotator/ulf_ann/ulf_sanity_checker.tar.gz">ULF Sanity Checker</a>
+        </li>
+
+        <li>
+          <a href="lisp_highlights.pdf">(Allegro Common) Lisp Highlights</a> <br>
+          This documents highlights aspects of Allegro Common Lisp that are important for getting started as a beginner.  It covers important functions to know, some weird aspects of Lisp, minimal debugging tips, and some exercises to get comfortable with Lisp programming.
+        </li>
+      </ul>
+
+      <h2 id="pubs">Publications from this Project</h2>
+      <ul>
+        <li>
+          <a href="papers/sembear-2017-final-submission.pdf">Intension, Attitude, and Tense Annotation in a High-Fidelity Semantic Representation</a><br>
+          <b>Gene Kim</b> and Lenhart Schubert<br>
+          In <i>Proceedings of the Workshop on Computational Semantics Beyond Events and Roles (SemBEaR), 2017</i><br>
+          <span class="links">
+          <a href="slides/kim-schubert-sembear2017.pdf">[Slides]</a>
+          <a href="http://www.aclweb.org/anthology/W/W17/W17-1802.bib">[Bibtex]</a>
+          </span>
+        </li>
+        
+        <li>
+          <a href="papers/high-fidelity-lex-corrected.pdf">High-Fidelity Lexical Axiom Construction from Verb Glosses</a><br>
+          <b>Gene Kim</b> and Lenhart Schubert<br>
+          In <i>Proceedings of the Fifth Joint Conference on Lexical and Computational Semantics (*SEM), 2016</i><br>
+          <span class="links">
+          <a href="papers/high-fidelity-lex-supplementary.pdf">[Supplementary Document]</a>
+          <a href="slides/starsem-2016-high-fidelity-lexical-axioms.pdf">[Slides]</a>
+          <a href="http://aclweb.org/anthology/S/S16/S16-2004.bib">[Bibtex]</a>
+          </span>
+        </li>
+        
+      </ul>
+
+      <h2>Technical Reports/Unrefereed Articles</h2>
+      <ul>
+      </ul>
+    </div>
+  </body>
+</html>
