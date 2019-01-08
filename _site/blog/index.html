@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Blog</title>
+    <link href="/assets/css/styles.css" rel="stylesheet">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" />
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Blog</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Blog" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/blog/" />
+<meta property="og:url" content="http://localhost:4000/blog/" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/blog/","headline":"Blog","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+  <body>
+    <nav>
+  
+    <a href="/" >Home</a>
+  
+    <a href="/about.html" >About</a>
+  
+    <a href="/blog.html" >Blog</a>
+  
+    <a href="/contrib-authors.html" >Authors</a>
+  
+</nav>
+
+    <h1>Latest Posts</h1>
+
+<ul>
+  
+    <li>
+      <h2><a href="/2019/01/08/role-of-ulf-in-el-interpretation/">Role of ULF in Comprehensive Semantic Interpretation</a></h2>
+      <p><!-- %```````````````````````````````````````````````````````````````` -->
+<!-- % Points:  -->
+<!-- %   How ULFs encode possible meanings: -->
+<!-- %  -  The set of unscoped elements corresponds to a fixed set of possibilities; -->
+<!-- %  -  Deindexing of tense, temporal adverbials leads to a fixed set of -->
+<!-- %     possible temporal relationships; (Hwang & Schubert 1994) -->
+<!-- % -->
+<!-- %   Linguistic phrase structure provides important clues to disambiguation -->
+<!-- %   of scope, coreference, elided material, presupposed material, temporal -->
+<!-- %   relations. By retaining the essential structure of the input, ULFs  -->
+<!-- %   support use of these cues (whether by algorithmic or ML methods). -->
+<!-- %   E.g.: The possible positions for unscoped pres/past/quantifiers/and/or -->
+<!-- %         are unambiguously determined by their context of appearance in -->
+<!-- %         ULF (see Schubert & Pelletier 1982). Further, structural properties -->
+<!-- %         bias choices of these scopes (order of appearance, modal embedding, -->
+<!-- %         relative wide-scoping tendencies) -\- e.g., Hurum; Hafezi-Manshadi -->
+<!-- %   E.g.: Intrasentential anaphora resolution is known to be constrained by  -->
+<!-- %         C-command relations and reflexive binding constraints; ULF preserves  -->
+<!-- %         the relevant information; -->
+<!-- %   E.g., E.g., Ellipsis resolution depends on structural context: "She has  -->
+<!-- %         as many books as I". -->
+<!-- % -->
+<!-- %   Subsequent scoping and deindexing, followed by canonicalization (Skolemization, -->
+<!-- %   conjunction splitting, etc.) typically leads to sets of predications not -->
+<!-- %   unlike those often posited in approaches that seek to derive canonical -->
+<!-- %   LFs directly from surface strings. Perhaps human language understanding also -->
+<!-- %   leads to canonical "Mentalese" forms, and perhaps the appeal of semantic -->
+<!-- %   representations in terms of "triples" derives from this. But we contend -->
+<!-- %   that starting with a surface-oriented representations and working towards -->
+<!-- %   a canonical, factored representation offers compelling advantages. -->
+<!-- % -->
+<!-- % Another point: Retaining some ambiguity in sentence LFs is desirable, even -->
+<!-- %   necessary, because complete disambiguation often requires a broader context.  -->
+<!-- %   E.g., Resolving indexicality and deixis (I, you, this, here, now, ...) -->
+<!-- %         is clearly context dependent; also, -->
+<!-- %         whether a pronoun corefers inter- or intrasententially depends -->
+<!-- %         on prior sentences. E.g., "The boy thought he was going to die" -->
+<!-- %         may well mean the boy thought this about himself, but not if the  -->
+<!-- %         preceding sentence is "Billy's dad was badly wounded". -->
+<!-- %   E.g., Word senses depend on broader context. For example "car" can -->
+<!-- %         mean automobile throughout one lengthy passage, and railroad car -->
+<!-- %         in another (or even "first element" in Lisp documentation). -->
+<!-- %   E.g., Some utterances are radically ambiguous without prior context, -->
+<!-- %         such as "How about you?", with prior statements "I'm a sophomore", -->
+<!-- %         or "I like seafood". -->
+<p>
+ULFs are underspecified -- loosely structured and ambiguous -- in 
+several ways. But their surface-like form, and the type structure they
+encode, make them well-suited to reducing underspecification, both 
+using well-established linguistic principles and machine learning (ML)
+techniques that exploit the distributional properties of language.
+Many examples of how ULFs lead systematically to (alternative)
+disambiguated representations can be found in the references cited
+at the beginning.  The scope of this proposal is not expected to 
+encompass much of this further processing, but we want to reiterate 
+some reasons for regarding ULFs as a suitable basis.
+<p>
+We have developed and applied heuristic algorithms that resolve scope 
+ambiguities and make event structure explicit. Though these algorithms 
+are not sufficiently reliable, they set a baseline for future work 
+on disambiguation aided by ML techniques. The following points address
+the utility of ULFs as preliminary structures enabling systematic
+reduction of underspecification. 
+<p>
+<b> Word sense disambiguation (WSD):</b> One obvious form of 
+underspecification is word sense ambiguity. But while, 
+for example, <tt>(weak.a (plur creature.n))</tt> in (4) does 
+not specify which of the dozen WordNet senses of <i>weak</i> or 
+three senses of <i>creature</i> is intended here, the type structure
+is perfectly clear: A predicate modifier is being applied to a nominal
+predicate. Certainly standard statistical WSD techniques~\cite{jurafsky2009book} 
+can be applied to ULFs, but this should
+not in general be done for isolated sentences, since word senses
+tend to be used consistently over longer passages. We should mention
+here that adjectives appearing in predicative position (e.g., <i>able</i> 
+in (2)) or in attributive position (e.g., <i>little</i> in (3)) are
+type-distinct, but ULF leaves this distinction to further processing, 
+since the semantic type of an adjective is unambiguous from the way 
+it appears in ULF.
+<p>
+<b> Predicate adicity:</b> A slightly subtler issue is the adicity of 
+predicates. We do not assume unique adicity of word-derived predicates 
+such as <tt>run.v</tt>, since such predicates can have intransitive, simple 
+transitive and other variants (e.g., <i>run quickly</i> vs. <i>run 
+  an experiment</i>). But adicity of a predicate in ULF is always clear from 
+the syntactic context in which it has been placed -- we know that it has 
+all its arguments in place, forming a truth-valued formula, when an 
+argument (the "subject") is placed on its left, as in English. 
+<p>
+<b> Scope ambiguity:</b> While some of the underspecification 
+in ULFs is deterministically resolvable, <i>unscoped</i> 
+constituents can generally "float" to more than one possible 
+position. The three types of unscoped elements in ULF are 
+<i>determiner phrases</i> derived from noun phrases (such as <i>very 
+  few people</i> and <i>the Earth</i> in (6)), the tense operators <tt>pres</tt> 
+and <tt>past</tt>, and the coordinators <tt>and.cc, or.cc</tt> and some 
+variants of these.  The positions they can "float" to in postprocessing 
+are always pre-sentential, and determiner phrases leave behind a variable
+that is then bound at the sentential level. This view of scope
+ambiguity was first developed in~\cite{schubert1982CL} and
+subsequently elaborated in~\cite{hurum1986AI} and reiterated in
+various publications by Hwang and Schubert. The accessible positions
+are constrained by certain restrictions well-known in linguistics. For 
+example, in the sentence <i>"Browder ... claims that every oligarch 
+  in Russia was forced to give Putin 50 percent of his wealth"</i>, there 
+is no wide-scope reading of <i>every</i>, to the effect <i>"For every 
+  oligarch in Russia, Browder claims ... etc."</i>; the subordinate clause 
+is a "scope island" for strong quantifiers like <i>every</i> (as well 
+as for tense). The important point here is that ULF allows exploitation
+of such structural constraints, since it still reflects the surface
+syntax. Now, firm linguistic constraints still leave open multiple 
+scoping possibilities, and many factors influence preferred choices, with
+surface form (e.g., surface ordering) playing a prominent role~\cite{manshadi2013ACL}. So again the proximity of ULF to surface syntax 
+should be helpful in applying ML techniques to determining preferred
+scopings. <!-- % QUICK EXAMPLE OF SCOPING ALGORITHM OUTPUT? -->
+
+</p></p></p></p></p>
+</p>
+    </li>
+  
+    <li>
+      <h2><a href="/2019/01/08/introduction-to-ulf-type-structure/">Introduction to ULF Type Structure</a></h2>
+      <p><!-- %`````````````````````````````` -->
+
+</p>
+    </li>
+  
+    <li>
+      <h2><a href="/2019/01/08/inference-with-ulfs/">Inference with ULFs</a></h2>
+      <p><!-- %``````````````````````````````` -->
+
+</p>
+    </li>
+  
+</ul>
+
+  </body>
+</html>

@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+<p>{{ page.date | date_to_string }} - 
+{% assign authorCount = page.author | size %}
+{% if authorCount == 0 %}
+    No author
+{% elsif authorCount == 1 %}
+    {% assign ainfo = site.authors | where: 'short_name', page.author | first %}
+    <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
+{% else %}
+    {% for author in page.author %}
+        {% assign ainfo = site.authors | where: 'short_name', author | first %}
+        {% if forloop.first %}
+        <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
+        {% elsif forloop.last %}
+        and <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
+        {% else %}
+        , <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+</p>
+
+{{ content }}
