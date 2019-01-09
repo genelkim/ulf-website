@@ -32,6 +32,7 @@ plugins:
   - jekyll-archives
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-scholar
 
 permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
@@ -65,6 +66,9 @@ defaults:
       path: ""
     values:
       layout: "default"
+
+scholar:
+  sort_by: author, year, title
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

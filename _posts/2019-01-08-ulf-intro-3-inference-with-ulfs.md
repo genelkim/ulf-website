@@ -90,7 +90,7 @@ Here, briefly, are some kinds of inferences we can expect ULFs to support:
    managed to quit smoking"</i> entails that <i>"She quit smoking"</i> (and
    the negation of the premise leads to the opposite conclusion). We
    already demonstrated such inferences in our framework for various
-   headlines~\cite{stratos2011KEOD}, such as the inference from
+   headlines {% cite stratos2011KEOD %}, such as the inference from
    <i>Oprah is shocked that Obama gets no respect</i> (Fox News 2011) 
    to <i>Obama gets no respect</i>. Such inferences are surely important
    -- and immediate -- in language understanding, and will be included

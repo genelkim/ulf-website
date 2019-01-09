@@ -1,15 +1,18 @@
 ---
 layout: home
 ---
-- TODO: add jekyll citation
+
+- TODO: add prev and next buttons on intro series
 - TODO: add info
 
 <h2>A Primal Logical Form for Episodic Logic</h2>
 
+<!--
 The equation below is just here for now as a MathJax reference...
 When \\(a \ne 0\\), there are two solutions to \\(ax^2 + bx + c = 0\\) and they are
   
   $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$
+-->
 
 Welcome to the ULF project page!  This project is aimed at formulating, annotating,
 and parsing so-called _unscoped logical forms_, which is representation for naturally

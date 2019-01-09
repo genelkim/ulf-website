@@ -35,6 +35,9 @@ layout: default
 
   <div class="post-content" itemprop="articleBody">
     {{ content }}
+
+    <h2>References</h2>
+    {% bibliography --cited %}
   </div>
 
   {% if site.comments == true and page.comments != false %}

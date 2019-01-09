@@ -1,0 +1,15 @@
+---
+---
+@import "whiteglass";
+.post-content {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.sc {
+  font-style: normal; /* disable italics */
+  font-weight: normal;
+  font-variant: small-caps;
+  font-variant-numeric: oldstyle-nums; /* small caps look
+                      best together with oldstyle numbers */
+}
