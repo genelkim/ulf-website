@@ -1,26 +1,46 @@
 ---
 layout: default
 ---
-<h1>{{ page.title }}</h1>
-<p>{{ page.date | date_to_string }} - 
-{% assign authorCount = page.author | size %}
-{% if authorCount == 0 %}
-    No author
-{% elsif authorCount == 1 %}
-    {% assign ainfo = site.authors | where: 'short_name', page.author | first %}
-    <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
-{% else %}
-    {% for author in page.author %}
-        {% assign ainfo = site.authors | where: 'short_name', author | first %}
-        {% if forloop.first %}
-        <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
-        {% elsif forloop.last %}
-        and <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
-        {% else %}
-        , <a href="{{ ainfo.url }}">{{ ainfo.name }}</a>
-        {% endif %}
-    {% endfor %}
-{% endif %}
-</p>
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-{{ content }}
+  <header class="post-header">
+    {% if page.external-url %}
+      <h1 class="post-title" itemprop="name headline"><a href="{{ page.external-url }}">{{ page.title | escape }} &rarr;</a></h1>
+    {% else %}
+      <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
+    {% endif %}
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>
+		{% if page.author %} • 
+			{% assign authorCount = page.author | size %}
+			{% if authorCount == 0 %}
+			    No author
+			{% elsif authorCount == 1 %}
+			    {% assign ainfo = site.authors | where: 'short_name', page.author | first %}
+			   <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ ainfo.name }}</span></span>
+			{% else %}
+			    {% for author in page.author %}
+			        {% assign ainfo = site.authors | where: 'short_name', author | first %}
+			        {% if forloop.first %}
+			        <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ ainfo.name }}</span></span>
+			        {% elsif forloop.last %}
+			        and <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ ainfo.name }}</span></span>
+			        {% else %}
+			        , <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ ainfo.name }}</span></span>
+			        {% endif %}
+			    {% endfor %}
+			{% endif %}
+		{% endif %}
+		{% if page.categories != empty or page.tags != empty %}{% include category_links.html categories=page.categories tags=page.tags %}{% endif %}</p>
+	</header>
+
+  <div class="post-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  {% if site.comments == true and page.comments != false %}
+    <div class="post-comments" itemprop="comment">
+      {% include custom_comments_provider.html %}
+    </div>
+  {% endif %}
+
+</article>

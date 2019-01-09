@@ -1,9 +1,12 @@
 ---
-layout: post
-title: Inference with ULFs
+title: ULF Intro 3 - Inference with ULFs
 author: 
-- gene 
-- len
+  - gene 
+  - len
+categories:
+  - Introduction
+  - Inference
+date: 2019-01-08 03:00:00
 ---
 
 <!-- %``````````````````````````````` -->

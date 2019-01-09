@@ -1,113 +1,174 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
   <head>
-    <meta charset="utf-8">
-    <title>ULF</title>
-    <link href="/assets/css/styles.css" rel="stylesheet">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-    <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" />
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>ULF</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="ULF" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/" />
-<meta property="og:url" content="http://localhost:4000/" />
-<script type="application/ld+json">
-{"@type":"WebSite","url":"http://localhost:4000/","headline":"ULF","@context":"http://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  </head>
+  
+  
+  
+  <title>Unscoped (Episodic) Logical Forms</title>
+  <meta name="description" content="This is the site main site for the Unscoped Episodic Logical Forms (ULF) project. We link to publications, code, and documentation as well as a series on semi-formal blog posts describing ULFs and the underlying logical formulation, Episodic Logic, in more depth.">
+  
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/">
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="Unscoped (Episodic) Logical Forms" href="http://localhost:4000/feed.xml">
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="genelkim">
+  <meta name="twitter:title" content="Unscoped (Episodic) Logical Forms">
+  <meta name="twitter:description" content="This is the site main site for the Unscoped Episodic Logical Forms (ULF) project. We link to publications, code, and documentation as well as a series on semi-formal blog posts describing ULFs and ...">
+  
+    <meta name="twitter:creator" content="genelkim">
+  
+  
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700" rel="stylesheet">
+
+  
+
+</head>
+
+
   <body>
-    <nav>
-  
-    <a href="/" class="current">Home</a>
-  
-    <a href="/about.html" >About</a>
-  
-    <a href="/blog.html" >Blog</a>
-  
-    <a href="/contrib-authors.html" >Authors</a>
-  
-</nav>
 
-    <div id="headers">
-  <div id="name">
-    Unscoped Logical Form
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Unscoped (Episodic) Logical Forms</a>
+
+    <nav class="site-nav">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+      
+        
+        <a class="page-link" href="/ulf/">ULF</a>
+      
+        
+        <a class="page-link" href="/resources/">Resources</a>
+      
+        
+        <a class="page-link" href="/publications/">Publications</a>
+      
+    </nav>
+
   </div>
 
-  <div id="title">
-    Primal Logical Form for Episodic Logic
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title"></h1>
+  </header>
+
+  <div class="post-content">
+    <ul>
+  <li>TODO: add jekyll citation</li>
+  <li>TODO: add info</li>
+</ul>
+
+<h2>A Primal Logical Form for Episodic Logic</h2>
+
+<p>The equation below is just here for now as a MathJax reference…
+When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are</p>
+
+<script type="math/tex; mode=display">x = {-b \pm \sqrt{b^2-4ac} \over 2a}</script>
+
+<p>Welcome to the ULF project page!  This project is aimed at formulating, annotating,
+and parsing so-called <em>unscoped logical forms</em>, which is representation for naturally
+capturing the semantic type structure of language within the framework of Episodic
+Logic.  Aspects of meaning unrelated to the semantic type structure are largely left
+ambiguous in ULFs for resolution in later steps.  The purpose of this is to have a
+semantic representation that can be quickly annotated by people and then precisely
+parsed using the current state-of-the-art techniques.  Take a look at a couple English
+sentences and corresponding ULFs.</p>
+
+<ul>
+  <li>Could you dial for me?
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(((pres could.aux-v) you.pro ((dial.v {ref1}.pro) 
+                              (adv-a (for.p me.pro)))) ?)
+</code></pre></div>    </div>
+  </li>
+  <li>If I were you I would be able to succeed
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>((if.ps (I.pro ((cf were.v) (= you.pro))))
+ (I.pro ((cf will.aux-s) (be.v (able.a (to succeed.v))))))
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>The dot-extensions <code class="highlighter-rouge">.n</code>, <code class="highlighter-rouge">.v</code>, <code class="highlighter-rouge">.a</code>, <code class="highlighter-rouge">.p</code>, <code class="highlighter-rouge">.aux-s</code>, and <code class="highlighter-rouge">.pro</code> are named in relation
+to their syntactic part-of-speech correspondents (nouns, verbs, adjectives, etc.).<br />
+Furthermore, if you’re familiar with constituency tree, you might have noticed that 
+the general structures of these formulas have a lot in common with them.  For example,
+“for me” makes a single constituent, which is a prepositional phrase in constituency
+trees.  Similarly, “dial for me”, “will be able to succeed” are both single constituents
+that correspond to verb phrases.  This sort of correspondence means that we can expect 
+annotating and learning parsers for ULFs shouldn’t be too much of a stretch beyond 
+constituency parsing, for which research has been very successful.</p>
+
+<p>Despite the surface similarity, ULFs are not syntax.  The underlying Episodic
+Logic type system means that there are specific formal meanings and
+restrictions to the compositions in these formulas.  <code class="highlighter-rouge">.pro</code> correspond to
+individuals in the domain, whereas <code class="highlighter-rouge">.n</code>, <code class="highlighter-rouge">.a</code>, and <code class="highlighter-rouge">.v</code> correspond to
+predicates of varying adicity.  This is why we need operators like <code class="highlighter-rouge">adv-a</code> are
+necessary for shifting the types appropriately.  ULFs are useful both for
+further resolution of ambiguity towards full Episodic Logic (as the name ULF
+suggests, one of these resolution steps is scoping) and immediate inference
+from ULFs.  The closeness of ULF to syntax allows it to be used in Natural
+Logic-like inferences, which are inference derived from syntactic structure,
+polarity context, and specificity-relations between words and phrases.  The
+semantic types of ULFs also allows it to make forward inferences in a manner
+similar to Episodic Logic, while attending to the locations of remaining
+ambiguity.</p>
+
+<p>Learning a precise parser for ULFs would be a step toward a comprehensive
+semantic parser for a rich, model-theoretic semantic representation.  We
+expect that a representation like this is necessary for general and robust
+understanding and reasoning over natural language.</p>
+
+
+
   </div>
-</div>
 
+  
 
-<div id="details">
-  <div id="intro">
-    <h2>Unscoped Logical Form, Deeper Semantics, and Inference</h2>
+</article>
 
-When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
-  $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+      </div>
+    </main>
 
+    <footer class="site-footer">
 
-The idea of our unscoped logical form (ULF) was not developed in isolation,
-but rather as part of a more comprehensive approach to deriving deep,
-semantically coherent and inference-enabling representations of
-linguistic content~\cite{hwang1992thesis,hwang1993STA,schubert2000book}. However, since our focus in the proposal
-is parsing into ULF, we begin by providing an intuitive idea of the
-form and meaning of ULFs. We then discuss the advantages and role of ULFs
-in deeper processing, and the kinds of inferences enabled both at the
-ULF level and the deeper level.
+  <div class="wrapper">
 
-5
+    <p>
+      
 
+&copy;  - Powered by <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://github.com/yous/whiteglass">whiteglass</a> - Subscribe via <a href="http://localhost:4000/feed.xml">RSS</a>
 
+    </p>
 
-  <h2>Online Resources</h2>
-  <ul>
-    <li>
-      <a href="http://onlineannotator-env2.us-east-2.elasticbeanstalk.com/select_annotator.php">ULF and Inference Annotators</a><br>
-      Annotators for my research project on annotating and demonstrating the inference capabilities of underspecified episodic logic.  If you're interested in getting involved please let me know!  I'm always looking for more collaborators on this project. <br>
-      <b>Related resources:</b>
-      <a href="el-annotator/ulf_ann/docs/ann_doc.pdf">ULF Annotation Guidelines</a>,
-      <a href="el-annotator/ulf_ann/ulf_sanity_checker.tar.gz">ULF Sanity Checker</a>
-    </li>
+  </div>
 
-    <li>
-      <a href="lisp_highlights.pdf">(Allegro Common) Lisp Highlights</a> <br>
-      This documents highlights aspects of Allegro Common Lisp that are important for getting started as a beginner.  It covers important functions to know, some weird aspects of Lisp, minimal debugging tips, and some exercises to get comfortable with Lisp programming.
-    </li>
-  </ul>
+</footer>
 
-  <h2 id="pubs">Publications from this Project</h2>
-  <ul>
-    <li>
-      <a href="papers/sembear-2017-final-submission.pdf">Intension, Attitude, and Tense Annotation in a High-Fidelity Semantic Representation</a><br>
-      <b>Gene Kim</b> and Lenhart Schubert<br>
-      In <i>Proceedings of the Workshop on Computational Semantics Beyond Events and Roles (SemBEaR), 2017</i><br>
-      <span class="links">
-      <a href="slides/kim-schubert-sembear2017.pdf">[Slides]</a>
-      <a href="http://www.aclweb.org/anthology/W/W17/W17-1802.bib">[Bibtex]</a>
-      </span>
-    </li>
-    
-    <li>
-      <a href="papers/high-fidelity-lex-corrected.pdf">High-Fidelity Lexical Axiom Construction from Verb Glosses</a><br>
-      <b>Gene Kim</b> and Lenhart Schubert<br>
-      In <i>Proceedings of the Fifth Joint Conference on Lexical and Computational Semantics (*SEM), 2016</i><br>
-      <span class="links">
-      <a href="papers/high-fidelity-lex-supplementary.pdf">[Supplementary Document]</a>
-      <a href="slides/starsem-2016-high-fidelity-lexical-axioms.pdf">[Slides]</a>
-      <a href="http://aclweb.org/anthology/S/S16/S16-2004.bib">[Bibtex]</a>
-      </span>
-    </li>
-    
-  </ul>
-
-  <h2>Technical Reports/Unrefereed Articles</h2>
-  <ul>
-  </ul>
-</div>
 
   </body>
+
 </html>

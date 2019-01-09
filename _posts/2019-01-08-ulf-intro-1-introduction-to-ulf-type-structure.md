@@ -1,9 +1,12 @@
 ---
-layout: post
-title: Introduction to ULF Type Structure
+title: ULF Intro 1 - Introduction to ULF Type Structure
 author: 
-- gene
-- len
+  - gene
+  - len
+categories:
+  - Introduction
+  - Type Structure
+date: 2019-01-08 01:00:00
 ---
 <!-- %`````````````````````````````` -->
 

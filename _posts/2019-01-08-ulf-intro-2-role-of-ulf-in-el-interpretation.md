@@ -1,43 +1,15 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-    <link href="/assets/css/styles.css" rel="stylesheet">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-    <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" />
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Blog</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Blog" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="http://localhost:4000/blog/" />
-<meta property="og:url" content="http://localhost:4000/blog/" />
-<script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/blog/","headline":"Blog","@context":"http://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
+---
+title: ULF Intro 2 - Role of ULF in Comprehensive Semantic Interpretation
+author:
+  - gene
+  - len
+categories:
+  - Introduction
+  - Semantic Interpretation Process
+date: 2019-01-08 02:00:00
+---
 
-  </head>
-  <body>
-    <nav>
-  
-    <a href="/" >Home</a>
-  
-    <a href="/about.html" >About</a>
-  
-    <a href="/blog.html" >Blog</a>
-  
-    <a href="/contrib-authors.html" >Authors</a>
-  
-</nav>
-
-    <h1>Latest Posts</h1>
-
-<ul>
-  
-    <li>
-      <h2><a href="/2019/01/08/role-of-ulf-in-el-interpretation/">Role of ULF in Comprehensive Semantic Interpretation</a></h2>
-      <p><!-- %```````````````````````````````````````````````````````````````` -->
+<!-- %```````````````````````````````````````````````````````````````` -->
 <!-- % Points:  -->
 <!-- %   How ULFs encode possible meanings: -->
 <!-- %  -  The set of unscoped elements corresponds to a fixed set of possibilities; -->
@@ -153,25 +125,107 @@ surface form (e.g., surface ordering) playing a prominent role~\cite{manshadi201
 should be helpful in applying ML techniques to determining preferred
 scopings. <!-- % QUICK EXAMPLE OF SCOPING ALGORITHM OUTPUT? -->
 
-</p></p></p></p></p>
-</p>
-    </li>
-  
-    <li>
-      <h2><a href="/2019/01/08/introduction-to-ulf-type-structure/">Introduction to ULF Type Structure</a></h2>
-      <p><!-- %`````````````````````````````` -->
+<p>
+<b> Anaphora:</b> Another important aspect of disambiguation is coreference
+resolution. Again there are important linguistic constraints ("binding
+constraints") in this task. For example, in <i>"John said that he was
+  robbed", he</i> can refer to John; but this is not possible in <i>"He
+  said that John was robbed"</i>, because in the latter, <i>he</i> C-commands
+<i>John</i>, i.e., in the phrase structure of the sentence, it is a sibling
+of an ancestor of <i>John</i>. ULF preserves this structure, allowing use
+of such constraints. Preservation of structure also allows application
+of ML techniques~\cite{poesio2016book}, but again this should be done
+over passages, not individual sentences, since coreference "chains"
+can span many sentences.
+When coreference relations have been established as far as possible
+and operators have been scoped, the resulting LFs are quite
+close in form to first-order logic, except for incorporating the
+additional expressive devices (generalized quantifiers, modification,
+attitudes, etc.) that we have already mentioned and illustrated.
+In our writings we call this the <i>indexical logical form</i>, or
+ILF.
 
-</p>
-    </li>
-  
-    <li>
-      <h2><a href="/2019/01/08/inference-with-ulfs/">Inference with ULFs</a></h2>
-      <p><!-- %``````````````````````````````` -->
+<p>
+<b> Event/situation structure:</b> The most important aspect of logical form 
+that remains implicit in ILF is event/situation structure. Much of our 
+past work has been concerned with the principles of <i>de-indexing</i>, 
+i.e., making events and situations -- <i>episodes</i> in our terminology -- 
+explicit~\cite{hwang1992thesis,hwang1994ICTL,schubert2000book2}. The relationship 
+to Davidsonian event semantics and Reichenbachian tense-aspect theory is 
+explained in these references. Our compositional approach to tense-aspect 
+processing leads to construction of a so-called <i>tense tree</i>, and yields 
+multiple, related reference events for sentences such as <i>"By 8pm  tonight, 
+  all the employees will have been working for 15 hours straight".</i>
+The relevant point here is that the compositional constuction and use of
+tense-trees is possible only if the logical form being processed reflects
+the original clausal structure -- as ULF and ILF indeed do.
 
-</p>
-    </li>
-  
-</ul>
+<!-- % Our approach to the semantics of tense, aspect, and temporal adverbials differs  -->
+<!-- % from the traditional Davidsonian approach in that it associates episodes  -->
+<!-- % not only with atomic predications, but also with negated, quantified,  -->
+<!-- % and other complex sentences. For example, in ELF there is an explicit -->
+<!-- % referent available for the phrase <i>this situation</i> in sentence -->
+<!-- % pairs such as <i>"No rain fell for two months. <u>This situation</u> -->
+<!-- % led to crop failures"</i>, or <i>"Every theater patron was trying to -->
+<!-- % exit through the same door. <u>This situation</u> led to disaster".</i> -->
+<!-- % In addition, we regard perfect and progressive aspect, via operators -->
+<!-- % <tt>perf} and <tt>prog}, together with the tense operators <tt>pres</tt> -->
+<!-- % and <tt>past} and modal auxiliary <tt>will.aux-s</tt>, as contributing  -->
+<!-- % to temporal structure compositionally, rather than by enumeration of -->
+<!-- % possible tense-aspect combinations. The compositional process is mediated -->
+<!-- % by <i>tense trees</i> systematically determined by ILF structure. The -->
+<!-- % process deposits, and makes reference to, episode tokens at tense tree -->
+<!-- % nodes, relating the various times/episodes referred to in sentences -->
+<!-- % such as <i>By 8pm tonight, all the employees will have been working -->
+  <!-- % for 15 hours straight".</i> Details are provided in the publications above, -->
+<!-- % especially (Hwang \& Schubert 1994).  -->
 
-  </body>
-</html>
+<p>
+<b> Canonicalization:</b> Finally, canonicalization of ELF into "minimal" 
+propositions, with top-level Skolemization (and occasionally 
+$\lambda$-conversions), is straightforward. A simple example was seen 
+in the Introduction, and some more complex examples are 
+shown in prior publications~\cite{schubert2000book,schubert2014SP,schubert2015AAAI}. 
+
+<p>
+When episodes have been made explicit (and optionally, canonicalized), 
+the result is <i>episodic logical form</i> (ELF); i.e., we have sentences 
+of Episodic Logic, as described in our previously cited publications. 
+These can be employed in our {\sc Epilog} inference engine for reasoning 
+that combines linguistic semantic content with world knowledge. 
+A variety of complex {\sc Epilog} inferences are reported in~\cite{schubert2013LiLT}, 
+and \cite{morbini2011chapter} contained examples of self-aware metareasoning. 
+Further in the past, {\sc Epilog} reasoned about snippets from the Little Red 
+Riding Hood story: <i>If the wolf tries to eat LRRH when there are 
+woodcutters nearby, what is likely to happen?</i>"; answer chain: <i>
+The wolf would attack and try to subdue LRRH; this would be noisy; 
+the woodcutters would notice, and see that a child is being attacked; 
+that is a wicked act, and they would rush to help her, and punish or 
+kill the wolf</i>~\cite{hwang1992thesis,schubert2000book}. However, the 
+scale of such world-knowledge-dependent reasoning has been limited
+by the difficulty of acquiring large amounts of inference-enabling 
+knowledge. (The largest experiments, showing the competitiveness
+of {\sc Epilog} against state-of-the art theorem provers were limited
+to formulas of first-order logic~\cite{morbini2009LFCR}.) In the
+proposed work we therefore focus on inferences that are important but
+not heavily dependent on world knowledge.
+
+<!-- % The potential of EL reasoning has been extensively demonstrated, making  -->
+<!-- % the prospect of effectively mapping language to EL an attractive one.  -->
+<!-- % The most complete [language $\rightarrow$ reasoning] system built so  -->
+<!-- % far (2012-14) was a system for interpreting captions of family photos  -->
+<!-- % (e.g., <i>Alice, with her two grandmothers at her graduation party</i>),  -->
+<!-- % then aligning the caption-derived knowledge with image-derived data -->
+<!-- % about individuals' apparent age, gend, hair color, eye-wear, etc.,  -->
+<!-- % merging the knowledge, and then inferentially answering questions -->
+<!-- % (<i>Who graduated?</i>). Unpublished reports (to ONR) on this work -->
+<!-- % exist, but further development has been hampered by difficulties in -->
+<!-- % obtaining large collections of captioned family photos for scaling up. -->
+
+<p>
+Thus ULFs comprise a "primal" logical form whose resemblance to phrase
+structure and whose constraints on semantic types provide a basis for
+the multi-faceted requirements of deriving less ambiguous, nonindexical,
+canonical LFs suitable for reasoning. However, as we have pointed out,
+ULFs are themselves inference-enabling, and this will be important for
+our evaluation plan.

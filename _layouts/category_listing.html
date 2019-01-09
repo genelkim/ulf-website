@@ -1,0 +1,57 @@
+---
+layout: default
+---
+<div class="home">
+
+  <h1 class="page-heading">Posts by Topic</h1>
+
+  {{ content }}
+
+  {% capture site_lang %}{{ site.lang | default: "en" }}{% endcapture %}
+
+	<ul class="post-archives">
+    <!-- First the two important ones, introduction and all chronological -->
+		{% assign categories_list = site.categories %}
+    {% assign introduction = categories_list | where_exp:"item","item[0].strip == Introduction" %}
+    <li><a class="post-link" href="/categories/introduction">Introduction ({{ introduction[0].size }})</a></li>
+    <li><a class="post-link" href="/archive">All Posts ({{ site.posts.size }})</a></li>
+    {% comment %} Compute category listing and number {% endcomment %}
+    {% for category in categories_list %}
+      {% if category[0] != "Introduction" %}
+        <li><a class="post-link" href="/categories/{{ category[0] | downcase | downcase | url_escape | strip | replace: ' ', '-' }}">{{ category[0] | camelcase }} ({{ category[1].size }})</a></li>
+      {% endif %}
+    {% endfor %}
+
+	</ul>
+
+
+  <!--
+  <ul class="post-archives">
+    {% for post in site.posts %}
+      {% capture post_lang %}{{ post.lang | default: site_lang }}{% endcapture %}
+      {% capture lang %}{% if post_lang != site_lang %}{{ post_lang }}{% endif %}{% endcapture %}
+
+      <li>
+        <span class="post-meta">
+          {{ post.date | date: "%b %-d, %Y" }}
+          {% if post.categories != empty or post.tags != empty %}
+            {% include category_links.html categories=post.categories tags=post.tags %}
+          {% endif %}
+          {% if post.external-url %}
+            • <a href="{{ post.url | relative_url }}">Permalink</a>
+          {% endif %}
+        </span>
+
+        <h2>
+          {% if post.external-url %}
+            <a class="post-link" href="{{ post.external-url }}">{{ post.title | escape }} &rarr;</a>
+          {% else %}
+            <a class="post-link" href="{{ post.url | relative_url }}"{% if lang != empty %} lang="{{ lang }}"{% endif %}>{{ post.title | escape }}</a>
+          {% endif %}
+        </h2>
+      </li>
+    {% endfor %}
+  -->
+  </ul>
+
+</div>

@@ -1,8 +1,11 @@
-- name: Home
-  link: /
-- name: About
-  link: /about.html
-- name: Blog
-  link: /blog.html
-- name: Authors
-  link: /contrib-authors.html
+# If you want to link only specific pages in your header, add the path to the
+# pages in order as they should show up.
+main:
+  - title: "About"
+    url: /about/
+  - title: "ULF"
+    url: /ulf/
+  - title: "Resources"
+    url: /resources/
+  - title: "Publications"
+    url: /publications/
