@@ -9,10 +9,10 @@ and parsing so-called _unscoped logical forms_, (ULF) which is representation fo
 capturing the semantic type structure of language within the framework of Episodic
 Logic.
 
-On this site you can learn more about <a href="/ulf/">ULF</a>, access <a
-href="/resources/">resources</a> related to the project, take a look at the
-<a href="/publications/">publications</a> that came out of our work, or 
-learn more about <a href="/about/">the team</a>!
+On this site you can learn more about <a href="{{ site.baseurl }}/ulf/">ULF</a>, access <a
+href="{{ site.baseurl }}/resources/">resources</a> related to the project, take a look at the
+<a href="{{ site.baseurl }}/publications/">publications</a> that came out of our work, or 
+learn more about <a href="{{ site.baseurl }}/about/">the team</a>!
 
 - TODO: add prev and next buttons on intro series
 - TODO: add info

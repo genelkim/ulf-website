@@ -13,12 +13,12 @@ layout: default
     <!-- First the two important ones, introduction and all chronological -->
 		{% assign categories_list = site.categories %}
     {% assign introduction = categories_list | where_exp:"item","item[0].strip == Introduction" %}
-    <li><a class="post-link" href="/categories/introduction">Introduction ({{ introduction[0].size }})</a></li>
-    <li><a class="post-link" href="/archive">All Posts ({{ site.posts.size }})</a></li>
+    <li><a class="post-link" href="{{ site.baseurl }}/categories/introduction">Introduction ({{ introduction[0].size }})</a></li>
+    <li><a class="post-link" href="{{ site.baseurl }}/archive">All Posts ({{ site.posts.size }})</a></li>
     {% comment %} Compute category listing and number {% endcomment %}
     {% for category in categories_list %}
       {% if category[0] != "Introduction" %}
-        <li><a class="post-link" href="/categories/{{ category[0] | downcase | downcase | url_escape | strip | replace: ' ', '-' }}">{{ category[0] | camelcase }} ({{ category[1].size }})</a></li>
+      <li><a class="post-link" href="{{ site.baseurl }}/categories/{{ category[0] | downcase | downcase | url_escape | strip | replace: ' ', '-' }}">{{ category[0] | camelcase }} ({{ category[1].size }})</a></li>
       {% endif %}
     {% endfor %}
 

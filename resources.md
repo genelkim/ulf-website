@@ -10,7 +10,7 @@ permalink: /resources/
 
 None released yet!
 
-## For ULF Annotations
+## Stuff for ULF Annotations
 
 <a href="http://onlineannotator-env2.us-east-2.elasticbeanstalk.com/select_annotator.php">ULF and Inference Annotators</a> for gathering a corpus for ULF parsing and human annotations for inference experiments, respectively.
 
