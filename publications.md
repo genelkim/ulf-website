@@ -3,10 +3,10 @@ layout: page
 title: "Publications"
 permalink: /publications/
 ---
-<ul>
+<ul class="publication-list">
   <li>
     <a href="http://cs.rochester.edu/u/gkim21/papers/sembear-2017-final-submission.pdf">Intension, Attitude, and Tense Annotation in a High-Fidelity Semantic Representation</a><br>
-    <b>Gene Kim</b> and Lenhart Schubert<br>
+    Gene Kim and Lenhart Schubert<br>
     In <i>Proceedings of the Workshop on Computational Semantics Beyond Events and Roles (SemBEaR), 2017</i><br>
     <span class="links">
     <a href="http://cs.rochester.edu/u/gkim21/slides/kim-schubert-sembear2017.pdf">[Slides]</a>
@@ -16,7 +16,7 @@ permalink: /publications/
   
   <li>
     <a href="http://cs.rochester.edu/u/gkim21/papers/high-fidelity-lex-corrected.pdf">High-Fidelity Lexical Axiom Construction from Verb Glosses</a><br>
-    <b>Gene Kim</b> and Lenhart Schubert<br>
+    Gene Kim and Lenhart Schubert<br>
     In <i>Proceedings of the Fifth Joint Conference on Lexical and Computational Semantics (*SEM), 2016</i><br>
     <span class="links">
     <a href="http://cs.rochester.edu/u/gkim21/papers/high-fidelity-lex-supplementary.pdf">[Supplementary Document]</a>
@@ -28,10 +28,10 @@ permalink: /publications/
 
 ## Unrefereed Articles
 
-<ul>
+<ul class="publication-list">
   <li>
     <a href="http://cs.rochester.edu/u/gkim21/papers/gene-thesis-proposal.pdf">Thesis Proposal</a><br>
-    <b>Gene Louis Kim</b><br>
+    Gene Louis Kim<br>
     <i>Committee:</i> Lenhart Schubert (supervisor), James Allen, Dan Gildea, Scott Grimm, Aaron Steven White<br>
     <span class="links">
     <a href="http://cs.rochester.edu/u/gkim21/slides/thesis-proposal-presentation.pdf">[Slides]</a>

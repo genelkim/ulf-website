@@ -19,3 +19,8 @@
   font-weight: normal;
   text-decoration: underline;
 }
+
+/* Add some space between publication items. */
+ul.publication-list li {
+  margin: 0 0 20px 0;
+}
