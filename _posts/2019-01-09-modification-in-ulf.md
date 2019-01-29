@@ -13,161 +13,216 @@ tags:
 {% assign dom = "\mathcal{D}" %}
 {% assign sit = "\mathcal{S}" %}
 {% assign tru = "\mathcal{2}" %}
+{% assign prd = "\mathcal{N}" %}
+{% assign rar = "\rightarrow" %}
+
+### Prerequisite Knowledge
+
+Understanding the crux of this post requires
+- basic knowledge of EL semantic types and associated notation,
+- basic knowledge of ULF syntax,
+- basic knowledge of the EL interpretation process,
+- familiarity with English syntax terminology, and
+- familiarity with terminology such as 'predicate' and 'intensional' from logic.
+
+Some details also require knowledge of
+- Skolemization,
+- lambda functions, and 
+- the EL charaterizing operator `**`.
+
 
 ## Predicate Modification
 
 EL semantic types represent predicate modifiers as functions from _monadic_
-predicates to _monadic_ predicates, i.e. (\\(({{ dom }} \rightarrow {{ tru }})
-\rightarrow ({{ dom }} \rightarrow {{ tru }})\\)).  This enables handling of
+predicates to _monadic_ predicates, i.e. (\\(({{ dom }} {{ rar }} {{ tru }})
+{{ rar }} ({{ dom }} {{ rar }} {{ tru }})\\)).  This enables handling of
 non-intersective modifiers, e.g._nearly_, _fake_, _almost_.  These are further
-distinguished between temporal and atemporal predicates, since those are
-distinct semantic types.
+distinguished by the syntactic category of the predicate being modified.
 
-- _atemporal_: `(fake.attr diamond.n)`
-- _temporal_: `(nearly.adv-a fall.v)`
+- _noun modification_: `(fake.mod-n diamond.n)`
+- _adjective modification_: `(very.mod-a happy.a)`
+- _verb modification_: `(nearly.adv-a fall.v)`
 
-`.attr` reflects the linguistic category of attributive adjectives and `.adv-a`
-reflects that the modifier comes from an adverb, further specifying  that this
-is an action or attribute modifier, as distinct from an event modifier,
-frequency modifier, or sentential (propositional) modifier. For example,
-"He thought *deeply*{:.ul}" refers to an action whose agent evinced
-depth of thought, rather than to a deep event. Actions, experiences, and
-attributes  in EL are agent-episode pairs, and modifiers of type-`.adv-a`
-applied to verbal  predicates express a constraint on both the agent (more
-generally, subject) of  a sentence and the episode it characterizes. Actions
-are not explicitly represented  in ULF but rather are derived during deindexing
-when event variables are introduced.  A modifier of type-`.adv-a`  applied to
-an adjectival predicate, as in  "*deeply*{:.ul} flawed", simply
-modifies a property of individuals,  rather than of agent-episode pairs.
+So the type extensions `.mod-n` and `.mod-a` are noun and adjective premodifier 
+types, respectively.  `.adv-a` is the VP adverbial type, which corresponds to
+monadic verb modifiers.  Ultimately, these become action modifiers in EL semantics,
+hence the `-a` extension.  Since actions aren't explicitly represented in ULF,
+`.adv-a` modifiers are represented as intensional monadic verb modifiers.
+(See [Actions, Experiences, and Attributes](#actions-experiences-and-attributes) for
+more details).
 
-The modifier forming operators in ULF with example annotations and formal
-types.  \\( \mathcal{N}\_{t} \\) is the type of a temporal (monadic) predicate and
-\\(\mathcal{N}\_{a}\\) is the type for an atemporal (monadic) predicate.  
+There are type-shifters that form operators of each of these types from monadic
+predicates.  The operator names borrow from the extensions that accompany the
+lexical versions of these modifiers.  So `mod-a`, `mod-n`, and `adv-a` (note,
+no dot preceding them) are type-shifters that shift monadic predicates to 
+adjective modifiers, noun modifiers, and VP modifiers, respectively.  Here are
+some examples
+
+`((mod-n wooden.a) shoe.n)`, `((mod-n ice.n) pick.n)`, `(fake.mod-n ruby.n)`,<br/> 
+`((mod-n worldly.a) wise.a)`, `(very.mod-a fit.a)`, `(slyly.adv-a grin.v)`
+
+In English there's also common noun premodification by a proper noun, e.g. 
+_"Seattle skyline"_.  For this case we also introduce a type-shifter from 
+a proper noun to a nominal modifier, `nnp`.
+
+`((nnp |Seattle|) skyline.n)`
+
+Here is a table of each of the type-shifters introduced so far along wth an example 
+and the formal type.
+
+<a name="tab:pred-mod-formers"></a>__Table of Predicate Modifier Forming Operators__
 
 | _Name_ | _Example_ | _Formal Type_ |
 |-----------|-----------|---------------|
-| `attr`  | `((attr (very.adv-a happy.a)) dog.n)`   | \\(\mathcal{N}\_{t} \rightarrow (\mathcal{N}\_{a} \rightarrow \mathcal{N}\_{a})\\) |
-| `adv-a` | `(play.v (adv-a (with.p (a.d dog.n))))` | \\(\mathcal{N}\_{t} \rightarrow (\mathcal{N}\_{t} \rightarrow \mathcal{N}\_{t})\\) |
-| `nn`    | `((nn pizza.n) box.n)`                  | \\(\mathcal{N}\_{a} \rightarrow (\mathcal{N}\_{a} \rightarrow \mathcal{N}\_{a})\\) |
-| `nnp`   | `((nnp |Seattle|) skyline.n)`           | \\({{ dom }} \rightarrow (\mathcal{N}\_{a} \rightarrow \mathcal{N}\_{a})\\) |
+| `mod-a` | `((mod-a worldly.a) wise.a)`            | \\({{ prd }} {{ rar }} ( {{ prd }}\_{ADJ} {{ rar }} {{ prd }}\_{ADJ} ) \\) |
+| `mod-n` | `((mod-a (very.mod-a happy.a)) dog.n)`  | \\({{ prd }} {{ rar }} ( {{ prd }}\_{N} {{ rar }} {{ prd }}\_{N} ) \\) |
+| `adv-a` | `(play.v (adv-a (with.p (a.d dog.n))))` | \\({{ prd }} {{ rar }} ( {{ prd }}\_{V} {{ rar }} {{ prd }}\_{V} ) \\) |
+| `nnp`   | `((nnp |Seattle|) skyline.n)`           | \\({{ dom }} \rightarrow ( {{ prd }}\_{N} {{ rar }} {{ prd }}\_{N} ) \\) |
 
-These modifiers can also be derived from predicates, most commonly
-prepositional phrases, thus ULF also has modifier-forming operators that
-correspond to  each of the type extensions (`attr`, `adv-a`), as well as some
-that don't  have lexical correspondents (`nn`, `nnp`).
-Table \ref{table:pred-mod-formers} lists these operators, examples of their
-usage, and their formal types.  The formal types are defined in terms of
-\\(\mathcal{N}\_{t}\\) for temporal (monadic) predicates and \\(\mathcal{N}\_{a}\\) for
-atemporal (monadic) predicates.\footnote{You may notice that while three of the
-operators form atemporal modifiers, only one forms a temporal modifier.  Within
-the type structure we could very well define temporal variants of `nn` and
-`nnp`, but it turns out not to really appear in English.} 
+Since in ULF there are no valid adjective-adjective, adjective-noun, noun-noun,
+noun-adjective compositions without this sort of type-shifting, we can often
+omit `mod-a` and `mod-n` type-shifters and introduce them in post-processing.
+For example, _"burning hot melting pot"_ is hand annotated as 
+
+```
+((burning.a hot.a) (melting.n pot.n))
+```
+
+which gets post-processed to
+
+```
+((mod-n ((mod-a burning.a) hot.a)) ((mod-n melting.n) pot.n))
+```
+
+Therefore, when there's a (ADJ ADJ), (ADJ N), (N N), or (N ADJ) structure we infer
+that the first argument is a modifier and the second is being modified.
+
+This cannot be done when the modifier is a verb -- _"running man"_,
+_"sleeping beauty"_, _"frequently returning member"_, annotated `((mod-n run.v)
+man.n)`, `((mod-n sleep.v) beauty.n)`, and `((mod-n (frequently.adv-f
+return.v)) (member-of.n *ref))`, respectively.  The _-ing_ morpheme here seems
+to be acting as an indication that this is a modifier, rather than marking a
+progressive or turning the verb into a noun.  This also occurs for verb-verb
+modification, e.g. _"He ran in the forest, looking at the trees"_ becomes 
+
+```
+(he.pro 
+  ((past run.v) (adv-e (in.p (the.d forest.n))) 
+                (adv-a (look.v (at.p-arg (the.d (plur tree.n)))))))
+```
+
+The subsection on [Participial Phrases](#participial-phrases) discusses such verb phrase
+modifiers in more detail.  Verbs need explicit type-shifters because some verbs can
+take predicate arguments so it would be ambiguous whether the noun or adjective following
+a verb is an argument or if the verb is acting as a predicate modifier.  An example of 
+a predicate argument is _sad_ in _"He looks sad"_.  _sad_ is a predicate argument to 
+_looks_ in this case.  This is the same reason that verb modifiers (i.e. of `adv-a` type)
+always require the type-shifter explicitly.
+
+
+
 
 <!--
-%GENE: I changed some
-temporal versus atemporal wording above to be about verbal versus %
-adjectival predicates. I've tended to think of some adjectives as temporal
-(e.g., %   angry, drunk) and others as atemporal (e.g., intelligent, plaid,
-distant, flawed) --  %   more or less in line with Greg's stage- vs
-individual-level predicates. Yet  %   '(very.adv-a angry.a)' seems to involve
-just straightforward transformation of %   a predicate over individuals, not
-pairs. %      But I'm wondering if perhaps you had it right, and even 'angry'
-is atemporal, and just %   becomes temporal when you apply "be" to it ("is
-angry"). I've wondered about this before %   in connection with sentences like
-"Every drunk customer was expelled from the bar", %   where we want to regard
-the restrictor predicate, "drunk customer" as no different %   in terms of
-semantic type from an unmodified nominal ("Every customer was expelled  %
-from the bar"); i.e., if "customer" is atemporal, then surely so is "underage,
-drunk  %   customer"; o/w the semantics of quantification becomes exceedingly
-tricky. I do talk %   about this in my "book", I think, opting for a Renate
-Musan-like analysis in terms  %   of maximal temporal chunks of individuals
-(sub-individuals, one might say) that have  %   the restrictor property over
-the temporal span they occupy... %
+GENE: I changed some temporal versus atemporal wording above to be about verbal
+versus adjectival predicates. I've tended to think of some adjectives as
+temporal (e.g., angry, drunk) and others as atemporal (e.g., intelligent,
+plaid, distant, flawed) -  more or less in line with Greg's stage- vs
+individual-level predicates. Yet  '(very.adv-a angry.a)' seems to involve just
+straightforward transformation of a predicate over individuals, not pairs.  But
+I'm wondering if perhaps you had it right, and even 'angry' is atemporal, and
+just becomes temporal when you apply "be" to it ("is angry"). I've wondered
+about this before in connection with sentences like "Every drunk customer was
+expelled from the bar", where we want to regard the restrictor predicate,
+"drunk customer" as no different in terms of semantic type from an unmodified
+nominal ("Every customer was expelled  from the bar"); i.e., if "customer" is
+atemporal, then surely so is "underage, drunk  customer"; o/w the semantics of
+quantification becomes exceedingly tricky. I do talk about this in my "book", I
+think, opting for a Renate Musan-like analysis in terms  of maximal temporal
+chunks of individuals (sub-individuals, one might say) that have  the
+restrictor property over the temporal span they occupy... 
 -->
 
 <!--
-%TODO: introduce operators corresponding to `nn` and `nnp` for temporal
-predicates: %      "dirt brown", "feather light", "razer sharp", "crystal
-clear", "Atlanta hot", %      Actually, this seems to just be adjective
-modification, not any atemporal predicate. %      I can't think of any examples
-where the modified constituent is a verb... maybe %      "cheetah run",
-"feather fall"? % %      This seems to indicate a distinction that isn't just
-temporal-atemporal, %      but a noun-adj-verb distinction.  If that's the
-case, why do we allow %      `adv-a` to take adjectives and verbs, and modify
-adjectives and %      verbs?  Also how do prepositional phrases fit into this?
-I generally %      think of prepositions as relational adjectives, but I can't
-think of any noun %      premodification of prepositional phrases. % %      I
-think we might have let the *.adv-a extension get a bit overused at this point.
-%      It doesn't seem to have a coherent type.  We've allowed it to capture
-all %      adjective/verb/preposition-adjective/verb/preposition modification.
-I think we %      probably should be distinguishing between modifiers that
-actually happen at action-level %      and those that are actually intensional
-predicate modifiers.  So %        (he.pro ((past leave.v) politely.adv-a)) %
-is fine, but %        (he.pro ((pres be.v) (very.adv-a happy.a))) %      seems
-strange.  We definitely don't want this latter example to turn into: %
-((he.pro ((pres be.v) happy.a)) ** e1), ([he.pro | e1] very.adv-a) %
-Rather, we seems to want something like 'very.adv/a' (along the lines of %
-your previous suggestion of a/n for adjective-noun modifiers), so we'd have %
-(he.pro ((pres be.v) (very.adv/a happy.a))) %      Similarly we'd introduce
-n/n, a/n, n/a, a/a, adv/a, n/v.  I would suggest including %      monadic
-prepositional phrases into adjective categories because of examples like %
-"I am very in the zone", "He is almost in the forest" % %      This would
-explicitly separate action modification from predicate modification. %      For
-action modification, we use `adv-a` which takes any predicate any can be %
-used to modify the action -- often an adjective and can be rewritten as -ly.
-This %      would capture all the manner adverbials as well as co-occurring
-actions. % %      For predicate modification, we would be fully explicit about
-the syntactic type %      combinations since the ULF combinations are in fact
-the way the types are going %      to combine (no post-processed lifting to
-actions).  So we need to make sure the %      types combine properly. %
-a/n : light feather (also attr) %        a/v : ? %        a/a : burning hot %
-n/n : melting pot %        n/v : cheetah run? %        n/a : feather light
-v/n : ? -- frequently returning member, sleeping beauty, running man, the never
-running man %        v/v : ? -- adv-a for all these probably %        v/a : ? %
-adv/n : ? %        adv/v : nearly run %        adv/a : very happy %      I'm
-not sure why the categories organize in this way... From an engineering
-perspective %      that doesn't matter so much, we just include this systematic
-procedure for simplicity %      even though not every category is used.  From a
-linguistic perspective, though I'm curious %      why the combinations exist
-the way they do...
+TODO: introduce operators corresponding to `nn` and `nnp` for temporal predicates:
+      "dirt brown", "feather light", "razer sharp", "crystal clear", "Atlanta hot",
+      Actually, this seems to just be adjective modification, not any atemporal predicate.
+      I can't think of any examples where the modified constituent is a verb... maybe
+      "cheetah run", "feather fall"?
 
-%TODO: write this section based on above notes for now and ask Len for feedback when he's back. %If he disagrees we might take it back to a previous version...
+      This seems to indicate a distinction that isn't just temporal-atemporal,
+      but a noun-adj-verb distinction.  If that's the case, why do we allow
+      `adv-a` to take adjectives and verbs, and modify adjectives and
+      verbs?  Also how do prepositional phrases fit into this? I generally
+      think of prepositions as relational adjectives, but I can't think of any noun
+      premodification of prepositional phrases.
+
+      I think we might have let the *.adv-a extension get a bit overused at this point.
+      It doesn't seem to have a coherent type.  We've allowed it to capture all
+      adjective/verb/preposition-adjective/verb/preposition modification. I think we
+      probably should be distinguishing between modifiers that actually happen at action-level
+      and those that are actually intensional predicate modifiers.  So
+        (he.pro ((past leave.v) politely.adv-a))
+      is fine, but
+        (he.pro ((pres be.v) (very.adv-a happy.a)))
+      seems strange.  We definitely don't want this latter example to turn into:
+       ((he.pro ((pres be.v) happy.a)) ** e1), ([he.pro | e1] very.adv-a)
+ Rather, we seems to want something like 'very.adv/a' (along the lines of
+ your previous suggestion of a/n for adjective-noun modifiers), so we'd have
+ (he.pro ((pres be.v) (very.adv/a happy.a)))
+      Similarly we'd introduce n/n, a/n, n/a, a/a, adv/a, n/v.  I would suggest including
+      monadic prepositional phrases into adjective categories because of examples like
+ "I am very in the zone", "He is almost in the forest"
+
+      This would explicitly separate action modification from predicate modification.
+      For action modification, we use `adv-a` which takes any predicate any can be
+ used to modify the action - often an adjective and can be rewritten as -ly.
+ This would capture all the manner adverbials as well as co-occurring actions.
+
+      For predicate modification, we would be fully explicit about the syntactic type
+      combinations since the ULF combinations are in fact the way the types are going
+      to combine (no post-processed lifting to actions).  So we need to make sure the
+      types combine properly.
+ a/n : light feather (also attr)
+        a/v : ?
+        a/a : burning hot
+ n/n : melting pot
+        n/v : cheetah run?
+        n/a : feather light
+ v/n : ? - frequently returning member, sleeping beauty, running man, the never running man
+        v/v : ? - adv-a for all these probably
+        v/a : ?
+        adv/n : ?
+        adv/v : nearly run
+        adv/a : very happy
+      I'm not sure why the categories organize in this way... From an engineering perspective
+      that doesn't matter so much, we just include this systematic procedure for simplicity
+      even though not every category is used.  From a linguistic perspective, though I'm curious
+      why the combinations exist the way they do...
 -->
 
-Notice from the examples in Table~\ref{table:pred-mod-formers} that the
-operators  aren't necessarily prefixed in ULFs, rather they appear in the
-surface word order.  In EL, monadic operators are prefixed, whereas operators
-with more arguments are infixed.  In ULF, we leave them in place since the
-operator and operand can be inferred from the types of the constituents.
-Consider the types for `play.v` and `(adv-a (with.p (the.d dog.n)))`.  Since
-the former is an atemporal predicate and the latter is an atemporal predicate
-modifier, we can be certain that `(adv-a (with.p (the.d dog.n)))` is the
-operator while `play.v` is the operand.
+Notice from the examples in [the table of predicate modifier forming operators](#table:pred-mod-formers) 
+that the operators aren't necessarily prefixed in ULFs, rather they appear in
+the surface word order.  In EL, monadic operators are prefixed, whereas
+operators with more arguments are infixed.  In ULF, we leave them in place
+since the operator and operand can be inferred from the types of the
+constituents.  Consider the types for `play.v` and `(adv-a (with.p (the.d
+dog.n)))`.  Since the former is an verbal monadic predicate and the latter is
+an verbal monadic predicate modifier, we can be certain that `(adv-a (with.p
+(the.d dog.n)))` is the operator while `play.v` is the operand.
 
-In practice, we're able to drop many of these predicate modifier type-shifters
-during annotation.  Since noun-noun and adjective-noun combinations don't have
-valid composition in ULF~(they are all predicates over individuals), when we
-come across such combinations we can automatically insert the appropriate
-type-shifter to make the  composition valid.  We assume in these cases that the
-prefixed predicate is the operator,  which reflects a common pattern in
-English.  Thus, "burning hot melting pot" would be  hand annotated as
-
-`((burning.a hot.a) (melting.n pot.n))`
-
-which would be post-processed to
-
-`((attr ((adv-a burning.a) hot.a)) ((nn melting.n) pot.n))`
-
-While the prefixed predicate modification allows us to formally model
-non-intersective modification, it does not necessarily indicate that the
-modification is non-intersective. For example, we would annotate "triangular
-container" as `((attr triangular.a) container.n)`, but since this relation is
+Premodification of adjectives and nouns in English tend to allow
+non-intersective readings, though this isn't always the case. The formal type
+of the modifiers described so far as intensional predicate modifiers (i.e. 
+\\({{ prd }} {{ rar }} {{ prd }}\\) allows us to handle both cases.
+An example of and intersective reading for premodification is _"triangular container"_ 
+which we annotate as `((mod-n triangular.a) container.n)`. Since this relation is
 intersective, given the correct background knowledge, we would infer that this
-has the same meaning as `(lambda x ((x triangular.a) and.cc (x
-container.n)))`. There are some constructions in English that really seem to
+has the same meaning as `(lambda x ((x triangular.a) and.cc (x container.n)))`.
+There are some constructions in English that really seem to always
 indicate an intersective interpretation via the grammar, for which we annotate
-them as such. This includes post-nominal modification and  appositives.  We
-would annotate "The buildings in the city" as
+them as such. This includes post-nominal modification and appositives.  For
+example, we would annotate _"The buildings in the city"_ as (see the post
+on macros for details of the `n+preds` macro)
 
 ```
 (The.d (n+preds (plur building.n)                        
@@ -181,48 +236,276 @@ which is equivalent to
                   (x (in.p (the.d city.n))))))
 ```
 
-Thus we distinguish grammatical constructions that indicate intersective modification,  but ULFs do not distinguish all intersective vs. non-intersective modification.
+Thus we distinguish grammatical constructions that indicate intersective
+modification,  but ULFs do not distinguish all intersective vs.
+non-intersective modification.
+
+
+### Actions, Experiences, and Attributes
+
+In the general description, we glanced over what actions -- and more generally,
+experiences and attributes -- are (i.e. what `.adv-a` type predicate modifiers
+ultimately act over in EL).  Here we describe them a bit more carefully.  
+Adverbial modifiers of the sort `.adv-a` intuitively modify actions, experiences,
+or attributes, which are a category of individuals in the EL ontology distinct from 
+events and situations.  It's designed to deal with semantic subtleties such as:
+
+1. _"He lifted the child easily"_ -- which refers to an action that was easy for the agent, rather than to an easy event;
+2. _"He fell painfully"_ -- which refers to a painful experience rather than to a painful event; and 
+3. _"He excels intellectually"_ -- which refers to an intellectual attribute rather than to an intellectual event or situation.
+
+Actions, experiences, and attributes in EL are individuals comprised of
+agent-episode pairs and this allows modifiers of the sort `.adv-a` to
+express a constraint on both the agent (more generally, subject) of a sentence
+and the episode it characterizes.  No sharp or exhaustive classification of
+such pairs into actions, experiences, and attributes is presupposed by this --
+the point is just to make the subject of sentences available in working out
+entailments of VP-modification.  Since actions are derived, in part, from
+explicit episodes and such episodes are implicit in ULFs until deindexing,
+actions are also implicit in ULFs.  Formally, actions have the semantic type
+\\({{ act }} \subset {{ dom }}\\), where \\({{ act }}\\) is the range of a
+pairing function, `pair`, of type \\(({{ dom }} \times {{ sit }}) {{ rar }} 
+{{ dom }}\\). These action-based constraints are derived from `.adv-a` 
+predicate modifiers via meaning postulate inference rules.  So the formula 
+(used in the main discussion)
+
+`(|John| (play.v (adv-a (with.p (the.d dog.n)))))`
+
+after event deindexing and canonicalization could become the formula
+
+`[[|John| (play.v (adv-a (with.p (the.d dog.n))))] ** E1.sk]`
+
+where `E1.sk` is a Skolemized episode variable.  From this we can infer
+
+`[[|John| play.v] ** E1.sk]`,<br/> 
+`[(pair |John| E1.sk) with.p (the.d dog.n)]`
+
+The pairing function can also be written with the pipe shorthand, `(pair X Y)`
+\\( \equiv \\) `[X | Y]`.  So the second formula above can be rewritten as 
+`[[|John| | E1.sk] with.p (the.d dog.n)]`.  Lexical `.adv-a` modifiers are similarly
+derived into predications over actions.  _"They escape quickly"_ (ignoring
+tense) has the raw ULF representation
+
+`(they.pro (escape.v quickly.adv-a))`
+
+which after event deindexing, event canonicalization, and `.adv-a` inference results in
+
+`[[they.pro escape.v] ** E1.sk]` and `[[they.pro | E1.sk] quick.a]`
+
+Note the conversion of `quickly.adv-a` to `quick.a`, since a predication over actions
+is inferred from the verb modification.  
+
+
+### Participial Phrases  
+
+In case you're unfamiliar, partiples are verbs are used as adjectives (_working woman_, _running man_) 
+or nouns (_the exquisite cleaning_).  As you may have noticed, for simple cases we simply change the
+suffix marking of the word to the POS that it is acting as; e.g. `(working.a woman.n)`, 
+`(running.a man.n)`, and `(the.d (exquisite.a cleaning.n))`.  However, for complex participial phrases,
+this no longer works because the verb may take arguments in ways don't fit into formal interpretation
+of adjectives and nouns.  Consider for example, 
+
+- I greeted the __frequently returning__ member
+- We're required to submit a __carefully written__ notice
+- Kenneth nervously watched the woman, __alarmed by her gun__
+- I went back to sleep, __having heard this before__
+
+It seems that we can make arbitrarily complex verb phrases into paritipial phrases, including
+those that have passivization and perfect aspect.  All cases that initially looked tensed turned
+out to be passivization as far as I've seen so far.  Participial phrases also don't 
+allow progressives, since the _-ing_ morpheme is already in use.  It can get confusing
+though since in many cases participles have a concurrent interpretation, but
+this isn't always the case, e.g.
+
+- _Lifting weights for two hours, Ron developed sore muscles_
+- _The student scoring the highest grade on the exam will receive an award_
+
+We consider the concurrent vs. non-concurrent interpretation to be a pragmatic
+issue and therefore leave it ambiguous in the ULF representation of paritipial
+phrases.
+
+In ULF we don't have a single category for participial phrases since the
+semantic type structure can vary.  When the verb is acting as a predicate
+modifying adjective, we will treat complex participial phrases as untensed verb
+phrases which may include `perf` and `pasv` which are type-shifted to the
+appropriate predicate modifier.  For how we handle nominal participial phrases,
+please refer to the __Derived Nominals__ section of the annotation guidelines.
+Here are some concrete examples of complex predicate modifying participial
+phrase annotations in ULF.
+
+1. I greeted the __frequently returning__ member
+```
+(i.pro ((past greet.v) 
+        (the.d ((mod-n (frequently.adv-f return.v)) 
+                (member-of.n *ref)))))
+```
+2. We're required to submit a __carefully written__ notice
+```
+(we.pro ((pres (pasv require.v)) 
+         (to (submit.v 
+              (a.d ((mod-n (carefully.adv-a (pasv write.v))) 
+                    notice.n))))))
+```
+3. Kenneth nervously watched the woman, __alarmed by her gun__
+```
+(|Kenneth| 
+  (nervously.adv-a 
+    ((past watch.v) (the.d woman.n)
+                    (adv-a ((pasv alarm.v) (by.p-arg (her.d gun.n)))))))
+```
+4. I went back to sleep, __having heard this before__
+```
+(i.pro ((past go.v) back.adv-a (to.p-arg (k sleep.n))
+                    (adv-a (perf (hear.v this.pro before.adv-e)))))
+```
+5. __Lifting weights for two hours__, Ron developed sore muscles
+```
+(sub 
+  (adv-a (lift.v (k (plur weight.n)) 
+                 (adv-e (for.p (two.d (plur hour.n))))))
+  (|Ron| ((past develop.v) (k (sore.a (plur muscle.n))) *h)))
+```
+6. Any student __scoring a good grade on the exam__ will receive an award
+```
+((any.d (n+preds student.n
+                 (score.v (a.d (good.a grade.n)) 
+                          (on.p-arg (the.d exam.n)))))
+ ((pres will.aux-s) (receive.v (an.d award.n))))
+```
+
+
+### Comparison of Modifier Notation Against Stanford Dependencies
+
+The Stanford dependency parser indicates the lexical category of the modifier, not the operand.  
+
+- `amod` - adjectival modifier
+- `nmod` -- nominal modifier
+- `advmod` -- adverbial modifier
+- `partmod` -- participal modifier (e.g. _"recorded message"_)
+- `tmod` -- temporal modifier (e.g. _"said today"_)
+- etc.
+
+If we regard their amod, nmod, partmod labels as of type monadic predicate to monadic-predicate, 
+we have a kind of equivalence to what we're doing for N-premodification. But the ULF notation is 
+more informative concerning adverbs, because their `advmod` is ambiguous between adjective-modifying, 
+VP-modifying and S-modifying. The their notation is slightly more informative than ULF for 
+noun premodification -- they make distinctions like premodifying (ordinary) adjective vs. premodifying 
+participle.
 
 
 ## Sentence Modification
 
-The EL type system also makes the distinction between intensional and
-extensional modification for sentence modifiers.  This is in terms of whether
-the modifiers predicate over the episodes (e.g. "in the forest", "after
-dinner")  or map sentence intensions to sentence intensions (e.g. "probably",
-"according to the report"). These are annotated using `adv-e` and `adv-s`
-operators for extensional and intensional modification, respectively.  Both
-have lexical and modifier forming variants just like `adv-a`.  Formally, both
-these operators act  at sentence-level, but they often appear mid-sentence,
-e.g. "John probably went home".   Since the `-e` and `-s` extensions make it
-unambiguous that these are  sentence-level operators, these are annotated in
-place in ULFs.
+A formula or nonatomic verbal predicate in ULF may contain sentential modifiers
+of type \\(({{ sit }} {{ rar }} {{ tru }}) {{ rar }} ({{ sit }} {{ rar }} {{ tru }})\\):
+divided corresponding to their EL semantic differences into sorts `.adv-s`,
+`.adv-e`, and `.adv-f`. Again there are type-shifting operators that create
+these sorts of modifiers from monadic predicates. Sentential modifiers of the
+sort `.adv-s` are usually modal (and thus opaque), e.g., 
+
+  `perhaps.adv-s`, `(adv-s (without.p (a.d doubt.n)))`;
+
+however, negation is transparent in the usual sense -- the truth value of a
+negated sentence depends only of the truth value of the unnegated sentence.
+
+Modifiers of sort `.adv-e` are transparent, typically implying temporal or
+locative constraints, e.g.,
+  
+  `today.adv-e`, `(adv-e (during.p (the.d drought.n)))`, `(adv-e (in.p |Rome|))`;
+
+these constraints are ultimately cashed out as predications about episodes
+characterized by the sentence being modified. (This is also true for the `past`
+and `pres` tense operators.)  
+
+
+Similarly any modifier of sort `.adv-f` is transparent and implies the
+existence of a multi-episode (characterized by the sentence as a whole) whose
+temporally disjoint parts each have the same characterization
+{% cite hwang1994ICTL %}; e.g.,
+
+  `regularly.adv-f`, `(adv-f ({at}.p (three.d (plur time.n))))`;
 
 The relative scoping of these operators are left ambiguous at the ULF stage,
 just as with quantifiers and tense.  {% cite kim2017SemBEaR %} introduced this
 approach to sentence modification annotation and provides further details and
 examples.  They also discuss methods to handle tense and aspect annotation,
 which are closely related to sentence modification.  We adopt their approach in
-our work.  The primary difference between the approach described by~{% cite
-kim2017SemBEaR %} and our work is that they use different types of brackets to
-distinguish types of compositions whereas we rely on the type system or named
-operators, such as `n+preds`.
+our work.
 
-<!--
-%ULF semantic types distinguish between predicate modification and sentence modification and between intensional and extensional modification. %{% cite kim2017SemBEaR %} describe methods of annotating perfect and progressive aspect, modal auxiliaries, and verb-level vs. sentence-level modifiers in the context of ULF.  We adopt %the same approach with a few changes... TODO: look over paper and write any changes to the guidelines.
--->
 
-We consider negation to be an intensional sentence modifier and annotate it in
-the same way as we would other `adv-s` operators.  Due to how common it is, we
-allow it to be represented simply as `not`, without the type-extension, as  in
-`(|Clifford| ((pres be.v) not green.a))`
 
 ## Flat Bracketing & Localized Modification
 
-We generalize the flat bracketing technique of sentence-level operators
-described by {% cite kim2017SemBEaR %} to verb phrases in order to eliminate
-word reordering when annotating sentences like "Sally gave a book quickly to
-John".  All non-subject arguments and modifiers of a verb are supplied as
+In describing predicate and sentence modification, we've loosely described the
+relaxations for operator positioning.  Here we discuss the subtleties in operator
+positioning, motivate the relaxations, and specify the exact constraints.
+
+We refine and generalize the operator-lifting technique of sentence-level
+operators described by {% cite kim2017SemBEaR %} to verb phrases in order to
+eliminate word reordering when annotating sentences like _"Mary undoubtedly
+spoke up"_.  To summarize the approach from {% cite kim2017SemBEaR %},
+sentence-level operators (e.g. `.adv-e`, `.adv-s`, etc.) located in the middle
+of the sentence, e.g. `(|Mary| (undoubtedly.adv-s (past speak_up.v)))`,  
+can be automatically lifted to sentence-level since the semantic type makes
+its necessary position clear.  The example just given would lift `undoubtedly.adv-s`
+to sentence level resulting in the formula
+`(undoubtedly.adv-s (|Mary| (past speak_up.v)))`. (The same would be done for `past`
+when fully processing the sentence).
+
+There are a few refinements need to be made for the approach described by
+{% cite kim2017SemBEaR %}.  
+
+1. We need to add restrictions of lifting the operators through embedded sentences
+and type-shifters.
+2. We need to introduce a mechanism for non-lifted sentence-level operators.  That
+is, where the sentence-level operator just modifies locally via an implicit
+lambda expansion.
+3. A similar lifting operation is necessary for verb modifiers that can occur
+in constituent, rather than premodifying position.
+
+I'll discuss these in order.
+
+_Restrictions of lifting the operators through embedded sentences
+and type-shifters_
+
+Notice in the sentence the negations in the sentences _I know that he didn't go home_, 
+_I saw the boy that didn't take the icecream_, and _I like to not stay up late_
+are all restricted to their respective clauses and shouldn't be lifted to the top
+sentence-level.  The first two examples show cases where the negation is restricted
+to an embedded sentence.  The last case however restricts it to a verb phrase.  This
+seems to happen due to the reification of the verb phrase via the `ka` operator.  Notice
+this holds for _I like to bake cakes regularly_.  The liking is happening regularly, it's
+the baking that is regular.  Therefore, during the lifting phase, the lifting will only
+happen to the nearest sentence or type-shifter. 
+
+`(i.pro ((pres know.v) (that (he.pro ((past do.aux-s) not (go.v (adv-a ({to}.p (k home.n)))))))))`
+
+`(i.pro ((past see.v) (the.d (n+preds boy.n (that.rel ((past do.aux-s) not (take.v (the.d icecream.n))))))))`
+
+`(i.pro ((pres like.v) (to (not (stay_up.v late.adv-e)))))`
+
+`(i.pro ((pres like.v) (to (bake.v (k (plur cake.n)) regularly.adv-f))))`
+
+lift the negations and `regularly.adv-f` to make
+
+`(i.pro ((pres know.v) (that (not (he.pro ((past do.aux-s) (go.v (adv-a ({to}.p (k home.n))))))))))`
+
+`(i.pro ((past see.v) (the.d (n+preds boy.n (not (that.rel ((past do.aux-s) (take.v (the.d icecream.n)))))))))`
+
+`(i.pro ((pres like.v) (to (not (late.adv-e stay_up.v)))))`
+
+`(i.pro ((pres like.v) (to (regularly.adv-f (bake.v (k (plur cake.n)))))))`
+
+
+
+The types don't work out for the kind-of-action restriction of the sentence-level operator,
+but how this is handled will be clarified when we discuss the next refinement.  We need
+to generate an appropriate lambda expression to capture this.
+
+
+
+
+_"Sally gave a book quickly to John"_
+All non-subject arguments and modifiers of a verb are supplied as
 constituents at the same level.  The modifiers can then be lifted to the
 expected prefix position in post-processing and arguments are supplied to the
 verb in the provided order.  Consider the example "Alice delivered the artifact
@@ -242,4 +525,19 @@ carefully to the curator today", which can be annotated as
 The flat version allows simpler bracketing structures while preserving word order.
 
 TODO: localized modification -- the surprisingly happy man VP vs surprisingly the happy man VP
+
+
+
+## Summary
+
+- Intensional predicate modification is done through functions from monadic predicates to monadic predicates,
+\\({{ prd }} {{ rar }} {{ prd }}\\), which have suffix types `.mod-a`, `.mod-n`, and `.adv-a` for adjective,
+noun, and VP modification, respectively.
+- Predicate modifiers can be formed via type-shifters from monadic predicates (`mod-a`, `mod-n`, `adv-a`) or 
+individuals (`nnp`).
+- `mod-a` and `mod-n` type-shifters can be omitted if their first argument is not a verb and the resulting
+modifier is premodifying the other noun (e.g. `(happy.a dog.n)` omits `mod-n`, but `((mod-n (carefully.adv-a (pasv write.v))) notice.n)`
+cannot omit the `mod-n`).
+- When the types are explicit in ULF, the operator position can be either prefixed or infixed.
+- Intersective modification such as noun post-modification is handled through macros that map to equivalent lambda expressions.
 
