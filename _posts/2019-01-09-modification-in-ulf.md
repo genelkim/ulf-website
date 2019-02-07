@@ -422,7 +422,7 @@ existence of a multi-episode (characterized by the sentence as a whole) whose
 temporally disjoint parts each have the same characterization
 {% cite hwang1994ICTL %}; e.g.,
 
-  `regularly.adv-f`, `(adv-f ({at}.p (three.d (plur time.n))))`;
+  `regularly.adv-f`, `(adv-f ({at}.p (three.d (plur time.n))))`.
 
 The relative scoping of these operators are left ambiguous at the ULF stage,
 just as with quantifiers and tense.  {% cite kim2017SemBEaR %} introduced this
@@ -444,7 +444,7 @@ operators described by {% cite kim2017SemBEaR %} to verb phrases in order to
 eliminate word reordering when annotating sentences like _"Mary undoubtedly
 spoke up"_.  To summarize the approach from {% cite kim2017SemBEaR %},
 sentence-level operators (e.g. `.adv-e`, `.adv-s`, etc.) located in the middle
-of the sentence, e.g. `(|Mary| (undoubtedly.adv-s (past speak_up.v)))`,  
+of the sentence, e.g. `(|Mary| (undoubtedly.adv-s (past speak_up.v)))`,
 can be automatically lifted to sentence-level since the semantic type makes
 its necessary position clear.  The example just given would lift `undoubtedly.adv-s`
 to sentence level resulting in the formula
@@ -454,79 +454,255 @@ when fully processing the sentence).
 There are a few refinements need to be made for the approach described by
 {% cite kim2017SemBEaR %}.  
 
-1. We need to add restrictions of lifting the operators through embedded sentences
-and type-shifters.
-2. We need to introduce a mechanism for non-lifted sentence-level operators.  That
-is, where the sentence-level operator just modifies locally via an implicit
-lambda expansion.
+1. We need to add restrictions of lifting the operators to the nearest distinct
+   predications such as within embedded sentences and type-shifters.
+2. We need to introduce a mechanism for sentence-level operators scoped over
+   non-sentence contexts.
 3. A similar lifting operation is necessary for verb modifiers that can occur
-in constituent, rather than premodifying position.
+   in constituent, rather than premodifying position.
 
 I'll discuss these in order.
+ 
+### Refinement 1: Restrictions of lifting the operators to the nearest distinct predication
 
-_Restrictions of lifting the operators through embedded sentences
-and type-shifters_
+Notice that in the following sentences  
 
-Notice in the sentence the negations in the sentences _I know that he didn't go home_, 
-_I saw the boy that didn't take the icecream_, and _I like to not stay up late_
-are all restricted to their respective clauses and shouldn't be lifted to the top
-sentence-level.  The first two examples show cases where the negation is restricted
-to an embedded sentence.  The last case however restricts it to a verb phrase.  This
-seems to happen due to the reification of the verb phrase via the `ka` operator.  Notice
-this holds for _I like to bake cakes regularly_.  The liking is happening regularly, it's
-the baking that is regular.  Therefore, during the lifting phase, the lifting will only
-happen to the nearest sentence or type-shifter. 
+  (1) _I know that he didn't go home_, <br/>
+  (2) _I saw the boy that didn't take the ice cream_, and <br/>
+  (3) _I like to not stay up late_ 
 
-`(i.pro ((pres know.v) (that (he.pro ((past do.aux-s) not (go.v (adv-a ({to}.p (k home.n)))))))))`
+the negations are all restricted to their respective clauses and shouldn't be
+lifted to modify the top-level sentence. That is, (1) is equivalent to saying
+_I know that it is not the case that he went home_. If we were to lift the
+negation all the way to the top we get a meaning that we definitely don't want:
+\*_It is not the case that I know that he went home_. (1) and (2) are cases
+where the negation is restricted to an embedded sentence. (3) however restricts
+it to a verb phrase. This seems to happen due to the reification of the verb
+phrase via the `ka` operator. Notice this holds for _I like to bake cakes
+regularly_. The liking is happening regularly, it's the baking that is regular.
+Therefore, during the lifting phase, the lifting will only happen to the
+nearest sentence or type-shifter. Here we list the raw ULF interpretations for
+each of the sentences just discussed and the transformed versions after
+lifting.  You may notice that there is still some discrepancy in the annotation
+of sentence-level operators against {% cite kim2017SemBEaR %}. This will be
+cleared up in the discussion of the other refinedments.
 
-`(i.pro ((past see.v) (the.d (n+preds boy.n (that.rel ((past do.aux-s) not (take.v (the.d icecream.n))))))))`
-
-`(i.pro ((pres like.v) (to (not (stay_up.v late.adv-e)))))`
-
-`(i.pro ((pres like.v) (to (bake.v (k (plur cake.n)) regularly.adv-f))))`
-
-lift the negations and `regularly.adv-f` to make
-
-`(i.pro ((pres know.v) (that (not (he.pro ((past do.aux-s) (go.v (adv-a ({to}.p (k home.n))))))))))`
-
-`(i.pro ((past see.v) (the.d (n+preds boy.n (not (that.rel ((past do.aux-s) (take.v (the.d icecream.n)))))))))`
-
-`(i.pro ((pres like.v) (to (not (late.adv-e stay_up.v)))))`
-
-`(i.pro ((pres like.v) (to (regularly.adv-f (bake.v (k (plur cake.n)))))))`
-
-
-
-The types don't work out for the kind-of-action restriction of the sentence-level operator,
-but how this is handled will be clarified when we discuss the next refinement.  We need
-to generate an appropriate lambda expression to capture this.
-
+(1) _I know that he didn't go home_ <br>
+raw ULF
+```
+(i.pro ((pres know.v) 
+        (that (he.pro ((past do.aux-s) not 
+                       (go.v (adv-a ({to}.p (k home.n)))))))))
+```
+post-lifted ULF
+```
+(i.pro ((pres know.v) 
+        (that (not (he.pro ((past do.aux-s) 
+                            (go.v (adv-a ({to}.p (k home.n))))))))))
+```
 
 
+(2) _I saw the boy that didn't take the ice cream_ <br>
+raw ULF
+```
+(i.pro ((past see.v) 
+        (the.d (n+preds boy.n 
+                        (that.rel ((past do.aux-s) not 
+                                   (take.v (the.d (ice.n cream.n)))))))))
+```
+post-lifted ULF
+```
+(i.pro ((past see.v) 
+        (the.d (n+preds boy.n 
+                        (not (that.rel ((past do.aux-s) 
+                                        (take.v (the.d (ice.n cream.n))))))))))
+```
 
-_"Sally gave a book quickly to John"_
-All non-subject arguments and modifiers of a verb are supplied as
-constituents at the same level.  The modifiers can then be lifted to the
-expected prefix position in post-processing and arguments are supplied to the
-verb in the provided order.  Consider the example "Alice delivered the artifact
-carefully to the curator today", which can be annotated as
+(3) _I like to not stay up late_ <br>
+raw ULF
+```
+(i.pro ((pres like.v) (to (not (stay_up.v late.adv-e)))))
+```
+post-lifted ULF
+```
+(i.pro ((pres like.v) (to (not (late.adv-e stay_up.v)))))
+```
 
-<!--
-% TODO: for some reason the formatting for this file is causing misalignment in the numCharTab and the first indented line...     \ulf{(|Alice| ((past deliver.v) (the.d artifact.n) carefully.adv-a\\     \numCharTab{30}(to.p-arg (the.d curator.n)) today.adv-e))}
--->
 
- With explicit modifier scoping and fully curried arguments we get
+(4) _I like to bake cakes regularly_ <br>
+raw ULF
+```
+(i.pro ((pres like.v) (to (bake.v (k (plur cake.n)) regularly.adv-f))))
+```
+post-lifted ULF
+```
+(i.pro ((pres like.v) (to (regularly.adv-f (bake.v (k (plur cake.n)))))))
+```
+
+The type compositions don't work out for the kind-of-action restriction of the
+sentence-level operator, as in `(to (regularly.adv-f (bake.v (k (plur
+cake.n)))))` since `regularly.adv-f` is a sentence modifier 
+(\\(({{ sit }} {{ rar }} {{ tru }}) {{ rar }} ({{ sit }} {{ rar }} {{ tru }})\\))
+whereas `(bake.v (k (plur cake.n)))` is a monadic verbal predicate
+(\\({{ prd }}\_{V}\\) or 
+ \\(({{ dom }} {{ rar }} {{ sit }} {{ rar }} {{ tru }})\_{V}\\)).
+How this is handled will be clarified when we discuss the next refinement. We
+need to generate an appropriate lambda expression to capture this.
+
+The sentence-level operator will be restricted by the following contexts:
+
+1. Reification operators (e.g. examples (3) and (4))
+2. The predicate-argument boundary (e.g. _not_ in _The railing helps me not fall over_ evaluates over _fall over_, not the whole verb phrase)
+3. Type shifters (e.g. _surprisingly_ in _The surprisingly happy man walked in_ evaluates over the scope of _happy_, not the main verb)
+
+What all this reduces to is that a sentence-level operator lifts up the most
+restrictive complete predication to act over. Reification results in a completely
+separate predication between the predication in the reification context and the 
+predication resulting from the main verb of the sentence. Similarly, when a
+predicate is an argument of the main verb, the main verb causes some modification to
+or comments on the predication resulting from its argument, but the main verb overall
+makes a separate predication. Consider the example above, _The railing helps me
+not fall over_. _help_ operates over _me_ and _not fall over_, in that the
+subject of _help_ assists _me_ to realize the predicate _not fall over_, but
+the actual predication of _help_ (described by the complete sentence) is
+distinct from the predication resulting from the argument: _me not falling
+over_. In a sense 1) is a special case of 2). We know that once we reify something,
+the predicate within can't be forming the main verb, so the reified result must
+be used as an argument somewhere.
+
+
+### Refinement 2: Mechanism for sentence-level operators scoped over non-sentence contexts
+
+The lifting restrictions from refinement 1 leads to the problem that sentence
+level operators now scope over non-sentence objects, e.g. `(ka (not
+fall_over.v))`. This is problematic to the idea of composition through
+semantic types which ULF holds at its core. We assume an implicit expansion to 
+the necessary type with additional unspecified constituents. Within ULF these 
+constituents are fully unspecified, but would be fully resolved upon deindexing 
+the specific predication. Then an implicit lambda expression wraps around the 
+sentence-level operator with these unspecified arguments as the variables. This
+preserves the type of the predicate. For example, `(ka (not (fall_over.v)))` has
+the implicit lambda expression `(ka (lambda x (not (x fall_over.v))))`. Below
+are a few examples of this.
+
+(3) _I like to not stay up late_ <br>
+post-lifted ULF
+```
+(i.pro ((pres like.v) (to (not (late.adv-e stay_up.v)))))
+```
+showing implicit lambdas
+```
+(i.pro ((pres like.v) (to (lambda x (not (late.adv-e (x stay_up.v)))))))
+```
+
+(4) _I like to bake cakes regularly_ <br>
+post-lifted ULF
+```
+(i.pro ((pres like.v) (to (regularly.adv-f (bake.v (k (plur cake.n)))))))
+```
+showing implicit lambda
+```
+(i.pro ((pres like.v) 
+        (to (lambda x (regularly.adv-f (x (bake.v (k (plur cake.n)))))))))
+```
+
+(5) _The railing helps me not fall over_ <br>
+post-lifted ULF
+```
+((the.d railing.n) ((pres help.v) me.pro (not fall_over.v)))
+```
+showing implicit lambdas
+```
+((the.d railing.n) ((pres help.v) me.pro (lambda x (not (x fall_over.v)))))
+```
+
+(6) _The surprisingly happy man walked in_ <br>
+post-lifted ULF
+```
+((the.d ((surprisingly.adv-s happy.a) man.n)) ((past walk.v) in.adv-a))
+```
+showing implicit lambdas
+```
+((the.d ((lambda x (surprisingly.adv-s (x happy.a))) 
+         man.n)) 
+ ((past walk.v) in.adv-a))
+```
+
+### Refinement 3: Lifting functionality for verb modifiers
+
+Although at first we expected to be able to handle verb modifier placement by
+simply allowing arbitrary order, this isn't sufficient for ditransitive verbs
+since the modifier can be interleaved between the arguments, e.g. _Sally gave a
+book quickly to John_. Therefore, what we've settled on is that all
+non-subject arguments and modifiers of a verb are supplied as constituents at
+the same level. The modifiers can then be lifted to the expected prefix
+position in post-processing and arguments are supplied to the verb in the
+provided order. Consider the annotation of the following sentence.
+
+(7)_Alice delivered the artifact carefully to the curator today_
+```
+(|Alice| ((past deliver.v) (the.d artifact.n)
+                           carefully.adv-a
+                           (to.p-arg (the.d curator.n))
+                           today.adv-e))
+```
+
+Notice that we can combine the relaxed context of verbal and sentence
+modifiers. This flat form of supplying arguments and modifiers allows us to
+mostly preserve word order and simplify the bracketing structures. After
+lifting the modifiers, _carefully.adv-a_ and _today.adv-e_, we get
 
 ```
 (today.adv-e (|Alice| (carefully.adv-a 
-    (((past deliver.v) (the.d artifact.n)) (to.p-arg (the.d curator.n))))))
+                       ((past deliver.v) (the.d artifact.n)
+                                         (to.p-arg (the.d curator.n))))))                 
 ```
 
-The flat version allows simpler bracketing structures while preserving word order.
+Here is the same thing for the other example given above
 
-TODO: localized modification -- the surprisingly happy man VP vs surprisingly the happy man VP
+(8) _Sally gave a book quickly to John_
+```
+(|Sally| ((past give.v) (a.d book.n)
+                        quickly.adv-a
+                        (to.p-arg |John|)))
+```
+After lifting
+```
+(|Sally| (quickly.adv-a ((past give.v) (a.d book.n) 
+                                       (to.p-arg |John|))))
+```
 
+Just as with sentence-level operators, these verb modifiers can also be
+supplied in a manner that doesn't require lifting. That is, scoped over the
+whole verb phrase. For example, 
 
+(9) _Jenn quickly wrote the report_
+```
+(|Jenn| (quickly.adv-a ((past write.v) (the.d report.n))))
+```
+
+(10) _Jim declined the request politely_
+```
+(|Jim| (((past decline.v) (the.d request.n)) politely.adv-a))
+```
+
+For the motivating examples (7) and (8), this would require changing the word
+order. Since the verb modifiers are interleaved with the direct objects and
+indirect objects, they cannot scope around the full verb phrase in the given
+positions. For reference, the flattened versions of those ULFs would be
+
+(9') `(|Jenn| (quickly.adv-a (past write.v) (the.d report.n)))`
+
+(10') `(|Jim| ((past decline.v) (the.d request.n) politely.adv-a))`
+
+Note that the order of constituents in these flattened phrases are important.
+Although the modifiers are lifted out of the given position and moved to the
+verb phrase, the first verb when scanned left to right is considered the acting
+verb and the following arguments are interpreted in the English word order.
+So for example, `(quickly.adv-a (the.d report.n) (past write.v))` is not valid
+since after lifting we get `(quickly.adv-a ((the.d report.n) (past write.v)))`
+which looks like we're trying to apply a verb modifier to a sentence. (Left
+supplied verb arguments are assumed to be the subject).
 
 ## Summary
 
@@ -540,4 +716,6 @@ modifier is premodifying the other noun (e.g. `(happy.a dog.n)` omits `mod-n`, b
 cannot omit the `mod-n`).
 - When the types are explicit in ULF, the operator position can be either prefixed or infixed.
 - Intersective modification such as noun post-modification is handled through macros that map to equivalent lambda expressions.
+- Sentence-level operators are lifted to the nearest predication.
+- Verb modifiers can be interleaved with non-subject arguments and automatically lift to prefix position.
 
