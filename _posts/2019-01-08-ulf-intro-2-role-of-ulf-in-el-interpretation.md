@@ -58,76 +58,90 @@ date: 2019-01-08 02:00:00
 ULFs are underspecified -- loosely structured and ambiguous -- in 
 several ways. But their surface-like form, and the type structure they
 encode, make them well-suited to reducing underspecification, both 
-using well-established linguistic principles and machine learning (ML)
+using well-established linguistic principles and machine learning
 techniques that exploit the distributional properties of language.
-Many examples of how ULFs lead systematically to (alternative)
-disambiguated representations can be found in the references cited
-at the beginning.  The scope of this proposal is not expected to 
-encompass much of this further processing, but we want to reiterate 
-some reasons for regarding ULFs as a suitable basis.
+The image below shows a diagram of the interpretation process from
+an English sentence to full-fledged Episodic Logic and highlights
+where ULF fits into it. The structural dependencies in the diagram
+are shown with solid black arrows and information flow is shown with
+dashed blue arrows. The backwards arrows exist because the optimal
+choice at a particular step depends on the overall coherence of the
+final formula and such coherence information can be used to make
+decisions in structurally preceding steps. Word sense disambiguation
+and anaphoric resolution don't interact with the general structure
+of the formula so they can be incorporated at any point in the process.
+
+![ULF in the EL interpretation process]({{ site.baseurl }}/assets/img/ulf_interpretation_process_xbig_cropped.png)
 
 We have developed and applied heuristic algorithms that resolve scope 
 ambiguities and make event structure explicit. Though these algorithms 
-are not sufficiently reliable, they set a baseline for future work 
-on disambiguation aided by ML techniques. The following points address
-the utility of ULFs as preliminary structures enabling systematic
-reduction of underspecification. 
+are not sufficiently reliable, they set a baseline for future work. 
+We now discuss each of these resolutions steps in more detail and how
+ULF fits into them.
 
 ## Word sense disambiguation (WSD)
 
-One obvious form of 
-underspecification is word sense ambiguity. But while, 
-for example, `(weak.a (plur creature.n))` in (4) does 
-not specify which of the dozen WordNet senses of _weak_ or 
-three senses of _creature_ is intended here, the type structure
-is perfectly clear: A predicate modifier is being applied to a nominal
-predicate. Certainly standard statistical WSD techniques {% cite jurafsky2009book %} 
-can be applied to ULFs, but this should
-not in general be done for isolated sentences, since word senses
-tend to be used consistently over longer passages. We should mention
-here that adjectives appearing in predicative position (e.g., _able_ 
-in (2)) or in attributive position (e.g., _little_ in (3)) are
-type-distinct, but ULF leaves this distinction to further processing, 
-since the semantic type of an adjective is unambiguous from the way 
+One obvious form of underspecification is word sense ambiguity. But while, for
+example, `(weak.a (plur creature.n))` in (4) does not specify which of the
+dozen WordNet senses of _weak_ or three senses of _creature_ is intended here,
+the type structure is perfectly clear: A predicate modifier is being applied to
+a nominal predicate. Certainly standard statistical WSD techniques {% cite
+jurafsky2009book %} can be applied to ULFs, but this should not in general be
+done for isolated sentences, since word senses tend to be used consistently
+over longer passages. It should be noted that adjectives appearing in
+predicative position (e.g., _able_ in (2)) or in attributive position (e.g.,
+_little_ in (3)) are type-distinct EL, but ULF leaves this distinction to further
+processing, since the semantic type of an adjective is unambiguous from the way
 it appears in ULF.
 
 ## Predicate adicity
 
-A slightly subtler issue is the adicity of 
-predicates. We do not assume unique adicity of word-derived predicates 
-such as `run.v`, since such predicates can have intransitive, simple 
-transitive and other variants (e.g., _run quickly_ vs. _run 
-  an experiment_). But adicity of a predicate in ULF is always clear from 
-the syntactic context in which it has been placed -- we know that it has 
-all its arguments in place, forming a truth-valued formula, when an 
-argument (the "subject") is placed on its left, as in English. 
+A slightly subtler issue is the adicity of predicates. We do not assume unique
+adicity of word-derived predicates such as `run.v`, since such predicates can
+have intransitive, simple transitive and other variants (e.g., _run quickly_
+vs. _run an experiment_). But adicity of a predicate in ULF is always clear
+from the syntactic context in which it has been placed -- we know that it has
+all its arguments in place, forming a truth-valued formula, when an argument
+(the "subject") is placed on its left, as in English. It is for this reason
+that arguments that are implicit in the surface sentence are introduced in 
+ULFs, such as in example 1 from ULF Intro 1,
+
+_Could you dial for me?_
+```
+(((pres could.aux-v) you.pro (dial.v {ref1}.pro
+                                     (adv-a (for.p me.pro)))) ?)
+```
+
+In this example, `{ref1}.pro` is not in the surface sentence, but a known
+necessary argument of _dial_ for this sentence to make sense.
 
 ## Scope ambiguity
 
-While some of the underspecification in ULFs is
-deterministically resolvable, _unscoped_ constituents can generally "float" to
-more than one possible position. The three types of unscoped elements in ULF
-are _determiner phrases_ derived from noun phrases (such as _very few people_
-and _the Earth_ in (6)), the tense operators `pres` and `past`, and the
-coordinators `and.cc, or.cc` and some variants of these.  The positions they
-can "float" to in postprocessing are always pre-sentential, and determiner
-phrases leave behind a variable that is then bound at the sentential level.
-This view of scope ambiguity was first developed in {% cite schubert1982CL %}
-and subsequently elaborated in {% cite hurum1986AI %} and reiterated in various
-publications by Hwang and Schubert. The accessible positions are constrained by
-certain restrictions well-known in linguistics. For example, in the sentence
-_"Browder ... claims that every oligarch in Russia was forced to give Putin 50
-percent of his wealth"_, there is no wide-scope reading of _every_, to the
-effect _"For every oligarch in Russia, Browder claims ... etc."_; the
-subordinate clause is a "scope island" for strong quantifiers like _every_ (as
-well as for tense). The important point here is that ULF allows exploitation of
-such structural constraints, since it still reflects the surface syntax. Now,
-firm linguistic constraints still leave open multiple scoping possibilities,
-and many factors influence preferred choices, with surface form (e.g., surface
-ordering) playing a prominent role {% cite manshadi2013ACL %}. So again the
-proximity of ULF to surface syntax should be helpful in applying ML techniques
-to determining preferred scopings. <!-- % QUICK EXAMPLE OF SCOPING ALGORITHM
-OUTPUT? -->
+While some of the underspecification in ULFs is deterministically resolvable,
+_unscoped_ constituents can generally "float" to more than one possible
+position. The three types of unscoped elements in ULF are _determiner phrases_
+derived from noun phrases (such as _very few people_ and _the Earth_),
+the tense operators `pres` and `past`, and the coordinators `and.cc`, `or.cc` and
+some variants of these.  The positions they can "float" to in postprocessing
+are always pre-sentential, and determiner phrases leave behind a variable that
+is then bound at the sentential level. This view of scope ambiguity was first
+developed in {% cite schubert1982CL %} and subsequently elaborated in {% cite
+hurum1986AI %} and reiterated in various publications by Hwang and Schubert.
+The accessible positions are constrained by certain restrictions well-known in
+linguistics. For example, in the sentence 
+
+_"Browder ... claims that every oligarch in Russia was forced to give Putin half of his wealth"_, 
+
+there is no wide-scope reading of _every_, to the effect _"For every oligarch in
+Russia, Browder claims ... etc."_; the subordinate clause is a "scope island"
+for strong quantifiers like _every_ (as well as for tense). The important point
+here is that ULF allows exploitation of such structural constraints, since it
+still reflects the surface syntax. Now, firm linguistic constraints still leave
+open multiple scoping possibilities, and many factors influence preferred
+choices, with surface form (e.g., surface ordering) playing a prominent role {%
+cite manshadi2013ACL %}. So again the proximity of ULF to surface syntax should
+be helpful in applying ML techniques to determining preferred scopings. <!-- %
+QUICK EXAMPLE OF SCOPING ALGORITHM OUTPUT? -->
 
 
 ## Anaphora
@@ -232,4 +246,8 @@ the multi-faceted requirements of deriving less ambiguous, nonindexical,
 canonical LFs suitable for reasoning. However, as we have pointed out,
 ULFs are themselves inference-enabling, and this will be important for
 our evaluation plan.
+
+[Prev: ULF Intro 1]({{ site.baseurl }}/2019/01/07/ulf-intro-1-introduction-to-ulf-type-structure/)
+
+[Next: ULF Intro 3]({{ site.baseurl }}/2019/01/07/ulf-intro-3-inference-with-ulfs/)
 

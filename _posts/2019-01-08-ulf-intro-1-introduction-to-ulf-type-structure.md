@@ -8,25 +8,6 @@ categories:
   - Type Structure
 date: 2019-01-08 01:00:00
 ---
-<!-- %`````````````````````````````` -->
-
-<!-- % \section{Episodic Logic and Unscoped Logical Form} -->
-<!-- % %`````````````````````````````````````````````````` -->
-<!-- % Episodic Logic (EL) has been under development for many years, -->
-<!-- % and its syntactic and semantic features, the reasoning it enables  -->
-<!-- % (using the {\sc Epilog} inference engine), and large-scale extraction -->
-<!-- % of EL-encoded general factoids from text have been documented in  -->
-<!-- % various publications (e.g., Hwang \& Schubert 1993, 2000; Schubert \& -->
-<!-- % Hwang 2000; Schubert 2000, 2013; Schubert \& Tong 2013; Van Durme  -->
-<!-- % \& Schubert 2008; Morbini \& Schubert 2009, 2013). The greatest -->
-<!-- % remaining challenges in broad usage of EL and {\sc Epilog} in -->
-<!-- % language understanding, dialogue and commonsense reasoning are -->
-<!-- % the creation of a more accurate semantic parser and the acquisition -->
-<!-- % of large amounts of lexical and world knowledge. While our existing -->
-<!-- % work on knowledge acquisition is state-of-the-art (e.g., Van Durme -->
-<!-- % et al.\ 2009, Kim \& Schubert 2016), its accuracy is limited by -->
-<!-- % the quality of semantic parsing; this limitation provides part of  -->
-<!-- % the impetus for the present proposal. -->
 
 The following six examples provide an idea of the language-like 
 syntax of ULFs. The first two are from the Tatoeba database, the next
@@ -35,7 +16,7 @@ AMR-annotated corpus), and the last is from the Web:
 
 1. <span class="ex-sent">Could you dial for me?</span>
 ```
-(((pres could.aux-v) you.pro ((dial.v {ref1}.pro) 
+(((pres could.aux-v) you.pro (dial.v {ref1}.pro 
                               (adv-a (for.p me.pro)))) ?)
 ```
 2. <span class="ex-sent">If I were you I would be able to succeed.</span>
@@ -56,16 +37,15 @@ AMR-annotated corpus), and the last is from the Web:
 ```
 5. <span class="ex-sent">My drawing is not a picture of a hat</span>
 ```
-((my.d drawing.n) ((pres be.v) not.adv-s
-                   (a.d (picture-of.n (a.d hat.n)))))
+((my.d drawing.n) ((pres be.v) not
+                   (= (a.d (picture-of.n (a.d hat.n))))))
 ```
 6. <span class="ex-sent">Very few people still debate the fact that the earth is heating up</span>
 ```
-(((fquan (very.adv-a few.a)) (plur person.n))
-    (still.adv-s (debate.v
-       (the.d (n+preds fact.n 
-                       (= (that ((the.d |Earth|.n) 
-   ((pres prog) heat_up.v)))))))))
+(((fquan (very.mod-a few.a)) (plur person.n)) still.adv-s 
+  (debate.v (the.d (n+preds fact.n 
+                            (= (that ((the.d |Earth|.n) 
+                                      ((pres prog) heat_up.v)))))))))
 ```
 
 As can be seen, ULF structure quite closely reflects phrase structure; 
@@ -99,7 +79,7 @@ context-dependence and indexicality.
 Our semantic types are not as high-order as Montague's, nor as "rigid"
 as Montague's, but they suffice for maintaining type coherence. In
 particular, quantification is first-order, i.e., it iterates over 
-individual entities, not over predicates, etc.\ -- though through
+individual entities, not over predicates, etc. -- though through
 reification of predicate meanings and sentence meanings, we can "talk
 about" kinds of things, kinds of actions, propositions, etc., not just
 ordinary objects.
@@ -117,7 +97,7 @@ semantically the 1-place predicate `(for.p me.pro)` is formed by
 applying the 2-place predicate `for.p` to the (individual-denoting) 
 term `me.pro`. (Viewing \\(n\\)-place predicates as successively applied 
 to their arguments, each time reducing the adicity, is in keeping with 
-the traditions of Sch\"{o}nfinkel, Church, Curry, Montague, and others -- 
+the traditions of Schönfinkel, Church, Curry, Montague, and others -- 
 hence "curried" predicates.) If we apply `(for.p me.pro)` to another 
 argument, such as `|Snoopy|` (the name of a puppy), we obtain a truth 
 value. So semantically, `adv-a` is a _type-shifting operator_
@@ -128,28 +108,29 @@ _predicate_))), where the predicates are 1-place and thus of type
 grammatical distinction between predicative and adverbial uses of 
 prepositional phrases.
 
-In the preceding discussion we glossed over _intensionality_. For example,
+Then there is the issue of _intensionality_. For example,
 (2) is a counterfactual conditional, and the consequent clause _"I
   would be able to succeed"_ is not evaluated in the actual world, but
 in a possible world where the (patently false) antecedent is imagined
 to be true. ULF and deeper LFs derived from it are based on a semantics
 where sentences are evaluated in _possible situations (episodes)_,
 whose maxima are possible worlds. Details about syntactic forms and 
-semantic types in our approach to LF have been provided in many past 
-publications {% cite hwang1992thesis hwang1994ICTL schubert2000book %}.
+semantic types in the Episodic Logic approach to LF have been provided in many
+past publications {% cite hwang1992thesis hwang1994ICTL schubert2000book %}.
+This project website also contains separate posts that describe the syntax and
+semantic types in depth.
 
-There is scarcely space to say more about types in ULF here, but we note some 
-further type-shifting operators in the examples: `to` (synonym: `ka`)
-in (2) shifts a verbal predicate to a _kind (type) of action or attribute_,
-which is an abstract individual; `k` in (4) shifts a nominal predicate
-to a _kind_ of thing (so the subject here is the abstract kind,
-flowers, whose instances consist of sets of flowers; and `that` in (6)
-produces a reified _proposition_ (again an abstract individual) from
-a sentence meaning. Through these type shifts, we are able to maintain a
-simple, classical view of predication, while allowing greater expressivity
-than the most widely employed logical forms, for example enabling generalized 
-quantification (as in (6)), modification, reification, and other forms of 
-intensionality.
+We don't want to dive too deep for this introduction, but we note some further
+type-shifting operators in the examples to clarify the role of type-shifters in
+ULF.  `to` (synonym: `ka`) in (2) shifts a verbal predicate to a _kind (type)
+of action or attribute_, which is an abstract individual; `k` in (4) shifts a
+nominal predicate to a _kind_ of thing (so the subject here is the abstract
+kind, flowers, whose instances consist of sets of flowers; and `that` in (6)
+produces a reified _proposition_ (again an abstract individual) from a sentence
+meaning. Through these type shifts, we are able to maintain a simple, classical
+view of predication, while allowing greater expressivity than the most widely
+employed logical forms, for example enabling generalized quantification (as in
+(6)), modification, reification, and other forms of intensionality.
 
 The positioning of `(adv-a (for.p me.pro))` within the verbal predicate
 it modifies, rather than in prefix-operator position, already indicates
@@ -159,31 +140,30 @@ combine with operands so that type consistency is assured  -- and in fact
 in subsequent processing, any `(adv-a (...))` constituents of a verbal 
 predicate are moved so as to immediately precede that predicate. There
 are a number of further kinds of looseness in ULFs, but we defer further
-discussion to the next subsection.
+discussion to separate posts.
 
-Finally we note a general concern that might be raised about ULFs.
-Since they largely conform with surface syntax, they are clearly
-language-specific. Isn't the point of semantics to get at the
-deeper meanings underlying the surface forms or language, and shouldn't
-these be somewhat uniform across languages? Our answer is two-fold:
-First, from a semantic perspective, the ULFs for different languages
-will have certain essential commonalities, namely, means to express
-predication, truth-functional and other connectives, generalized
-quantifiers, predicate and sentence modification, predicate and 
-sentence reification, implicit and explicit reference to events/situations,
-comparatives, and a few other devices. Surface order is
-less important than these semantic commonalities. Second, we do
-think that sentence meanings should be factored into (as far as 
-possible) minimal, separately usable, canonical propositions. This 
-seems plausible both from speculations in cognitive science about 
-"Mentalese", and from a practical perspective, since canonicalization
-ensures that connections between ideas can be quickly recognized and 
-used for inference. A glimpse of the canonicalization process was
-already seen above for the sentence _"The boy wants to go"_.
-Of course the meaning of sentences "in the wild" can be much more 
-complex and subtle. Our hypothesis is that we can conquer those 
-complexities effectively by starting with a type-coherent surface form, 
-and systematically deriving canonical forms, bringing to bear many 
-different kinds of influential factors. The next subsection elaborates 
-on this view.
+To wrap up this introductory discussion, we note a general concern that might
+be raised about ULFs.  Since they largely conform with surface syntax, they are
+clearly language-specific. Isn't the point of semantics to get at the deeper
+meanings underlying the surface forms or language, and shouldn't these be
+somewhat uniform across languages? Our answer is two-fold: First, from a
+semantic perspective, the ULFs for different languages will have certain
+essential commonalities, namely, means to express predication, truth-functional
+and other connectives, generalized quantifiers, predicate and sentence
+modification, predicate and sentence reification, implicit and explicit
+reference to events/situations, comparatives, and a few other devices. Surface
+order is less important than these semantic commonalities. Second, we do think
+that sentence meanings should be factored into (as far as possible) minimal,
+separately usable, canonical propositions. This seems plausible both from
+speculations in cognitive science about "Mentalese", and from a practical
+perspective, since canonicalization ensures that connections between ideas can
+be quickly recognized and used for inference. This canonicalization is the topic
+of the next post of the ULF introduction.  Of course the meaning of sentences
+"in the wild" can be much more complex and subtle. Our hypothesis is that we
+can conquer those complexities effectively by starting with a type-coherent
+surface form, and systematically deriving canonical forms, bringing to bear
+many different kinds of influential factors.  The next subsection elaborates on
+this view.
+
+[Next: ULF Intro 2]({{ site.baseurl }}/2019/01/07/ulf-intro-2-role-of-ulf-in-el-interpretation)
 
