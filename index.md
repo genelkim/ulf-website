@@ -2,10 +2,10 @@
 layout: home
 ---
 
-## Welcome!
+## Welcome! ![ULF Logo]({{ site.baseurl }}/assets/img/ulf_logo.png)
 
 This is the ULF project page! This project is aimed at formulating, annotating,
-and parsing so-called _unscoped logical forms_ (ULF) which is representation for naturally
+and parsing so-called _unscoped logical forms_ (ULF) which is a representation for naturally
 capturing the semantic type structure of language within the framework of Episodic
 Logic (EL). ULF captures the predicate-argument structure in EL, staying faithful to
 the semantic types in EL theory, while leaving operator scopes, word sense, and anaphora

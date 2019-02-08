@@ -9,135 +9,240 @@ categories:
 date: 2019-01-08 03:00:00
 ---
 
-<!-- %``````````````````````````````` -->
+An important insight of NLog research is that language can be used directly for
+inference, requiring only phrase structure analysis and upward/downward
+entailment marking (polarity) of phrasal contexts. This means that NLog
+inferences are _situated_ inferences, i.e. their meaning is just as dependent
+on the utterance setting and discourse state as the linguistic "input" that
+drives them. This insight carries over to ULFs, and provides a separate
+justification for computing ULFs, apart from their utility in the process of
+deriving deep, context-independent, canonicalized meaning representations from
+language. 
 
-<!-- % I'M CONSIDERING KEEPING (SOME OF) THIS: -->
-<!-- % As justified in detail in (Schubert 2000), ULF and EL sharply distinguish  -->
-<!-- % propositions from events (more generally episodes). Propositions  -->
-<!-- % are abstract, true or false <i>information</i> objects and as such can  -->
-<!-- % be <i>asserted, known, believed, disputed, etc.</i>; whereas events are  -->
-<!-- % surely real, temporal entities in the world, often with causal consequences  -->
-<!-- % -/- without them, there would be no natural or social world as we know it.  -->
-<!-- % Consider for example,\\[.03in] -->
-<!-- % \ind <i>Molly barked last night; <u>that</u> woke up the neighbors.</i>\\ -->
-<!-- % \ind <i>Molly barked last night; <u>that</u>'s what the neighbors assert.</i>\\[.03in] -->
-<!-- % Note that propositions don't wake neighbors, but events certainly can; -->
-<!-- % and events can't be asserted, but propositions certainly can. Events -->
-<!-- % can have temporal parts at any scale, and can physically involve many -->
-<!-- % entities, but propositions cannot. Propositions and events are easily  -->
-<!-- % confused because they are closely related: NL sentences <i>express</i>  -->
-<!-- % propositions and at the same time <i>characterize</i> events or situations.  -->
-<!-- % But an adequate semantic representation must distinguish them, thus  -->
-<!-- % providing distinct referents for the two instances of the anaphoric  -->
-<!-- % <i>that</i> in the above sentences. For a full discussion see (Schubert -->
-<!-- % 2000) and also (Zucchi 1989). In general, propositions believed (or rejected) -->
-<!-- % by people are central to explaining the <i>reasons</i> for their actions,  -->
-<!-- % while events interact <i>causally</i>. In EL, the propositional referent  -->
-<!-- % in the second sentence is provided simply by applying the sentence reifying  -->
-<!-- % operator to the meaning of the sentence. The next paragraph explains how  -->
-<!-- % the event (episode) referent in the first sentence is obtained. -->
+ULFs in principle provide a more reliable and more general basis for situated
+inference than phrase structure, because of the coherent semantic type
+structure they encode. Greater reliability also leads to the possibility of
+spontaneous forward inferencing, as opposed to inference guided by systems
+classifying already provided hypotheses as entailments, contradictions, or
+neutral in relation to some reference sentence (as in most textual entailment
+and NLog studies to date -- e.g. SNLI, MNLI). Forward inference is important
+because human language understanding seems to involve continuous forward
+inferencing. Imagine that read the following sentence in a paper or newsfeed 
 
-<p>
-An important insight of NLog research is that language can be used
-directly for inference, requiring only phrase structure analysis 
-and upward/downward entailment marking (polarity) of phrasal contexts. 
-This means that NLog inferences are <i>situated</i> inferences, i.e.,
-their meaning is just as dependent on the utterance setting and discourse
-state as the linguistic ``input" that drives them.
+_"Police reported that the vehicle struck several cars"_
 
-<p>
-This insight carries over to ULFs, and provides a separate justification
-for computing ULFs, apart from their utility in the process of deriving
-deep, context-independent, canonicalized meaning representations from
-language. Our evaluation of the English-to-ULF parser that we are proposing
-to develop will be formulated in terms of certain classes of situated
-inferences enabled by ULFs. 
+you will conclude that 
 
-<p>
-ULFs in principle provide a more reliable and more general basis 
-for situated inference than mere phrase structure, because of the coherent 
-semantic type structure they encode. Greater reliability also leads to 
-the possibility of spontaneous forward inferencing, as opposed to 
-inference guided by propositions to be confirmed or disconfirmed (as 
-in most textual entailment and NLog studies to date). This is important, 
-because human language understanding seems to involve continuous forward 
-inferencing. As a simple example, if according to your paper or newsfeed 
-<i>"Police reported that the vehicle struck several cars"</i>, you will 
-conclude that the reported event almost certainly happened, and further, 
-that the cars involved were all damaged. Now, the first of these inferences 
-requires only a small amount of knowledge about communication, to the 
-effect that <i>reporting</i> (in your preferred media) typically involves 
-reporting of facts; whereas the latter depends on very specific world 
-knowledge. Our demonstration of ULF utility in forward inference will
-focus on the former kinds of inference (and related ones), since 
-accumulation of sufficient world knowledge for enabling the latter
-kinds of inference remains out of reach in the short run.
+(a) the reported event almost certainly happened, 
 
-<p>
-Here, briefly, are some kinds of inferences we can expect ULFs to support:
-<ul>
- <li> <i>NLog inferences based on generalizations/specializations</i>.
-   For example, <i>"Every NATO member sent troops to Afghanistan"</i>, 
-   together with the knowledge that France is a NATO member and that 
-   Afghanistan is a country entails that <i>France sent troops to
-   Afghanistan</i> and that <i>France sent troops to a country</i>.
-   Such inferences are within the scope of NLog-based and ULF-based 
-   methods, and can help in finding inference paths to candidate 
-   entailments; but they will not be our focus as they rarely seem 
-   worthwhile as spontaneous forward inferences from sentences in
-   discourse (we are particularly interested in dialogue settings).
- <li> <i>NLog inferences based on implicatives</i>. For example, <i>"She
-   managed to quit smoking"</i> entails that <i>"She quit smoking"</i> (and
-   the negation of the premise leads to the opposite conclusion). We
-   already demonstrated such inferences in our framework for various
-   headlines {% cite stratos2011KEOD %}, such as the inference from
-   <i>Oprah is shocked that Obama gets no respect</i> (Fox News 2011) 
-   to <i>Obama gets no respect</i>. Such inferences are surely important
-   -- and immediate -- in language understanding, and will be included
-   in our evaluations.
- <li> <i>Inferences based on attitudinal and communicative verbs</i>.
-   Some such inferences, for instance for <i>knowing-that</i> and <i>
-     finding-out-that</i>, fall under the previous heading, but others do
-   not. For example, <i>"John denounced Bill as a charlatan"</i>
-   entails that <i>John probably believes that Bill is a charlatan</i>,
-   that <i>John asserted to his listeners (or readers) that Bill is 
-     a charlatan</i>, and that <i>John wanted his listeners (or readers)
-     to believe that Bill is a charlatan</i>. Such inferences would be hard
-   to capture within NLog, since they are partially probabilistic,
-   require structural elaboration, and depend on constituent types.
+and further, 
+
+(b) that the cars involved were all damaged. 
+
+Conclusion (a) requires only a small amount of knowledge about communication,
+to the effect that _reporting_ (in your preferred media) typically involves
+reporting of facts; whereas conclusion (b) depends on very specific world
+knowledge. We expect to show ULF utility in forward inference in cases like
+conclusion (a), since accumulation of sufficient world knowledge for enabling
+such inferences seems practical. In principle, ULF could support inferences
+resulting in conclusion (b), (within the bounds of ULF ambiguity), but the
+necessary world knowledge remains out of reach in the short run. As a whole
+it's unreasonable to expect that an inference system will have a set of
+alternative hypotheses to choose from. Rather, inferences need to be able to
+be generated by the system directly.
+
+The rules for generating inference (a) could be as simple as
+
+```
+(all_wfulf w
+  ((something.pro ((past report.v) (that w)))
+   => ((the.d (event-of w)) probably.adv-s (past happen.v))))
+```
+
+where `all_wfulf` denotes substitutional quantification over well-formed ULF
+formulas. Substitutational quantification quantifies over substitutions of
+expressions of a particular category of metavariable. {% cite morbini2008WMR %}
+describes the details of this mechanism and how it fits into object level
+semantics. We can take the ULF formula for the report above
+
+```
+((k police.n)
+ ((past report.v) 
+  (that ((the.d vehicle.n) ((past strike.v) (several.d (plur car.n)))))))
+```
+
+and conclude
+
+```
+((the.d (event-of ((the.d vehicle.n) ((past strike.v) (several.d (plur car.n))))))
+ probably.adv-s (past happen.v))
+```
+
+We ended up relying on a non-standard operator `event-of` here for simplicity.
+This could be translated more formally into using the _characterizing_ operator
+`**`, which is implicit in strict ULF.
+
+### Propositions vs Events
+
+To get more concrete about the role of the semantic types in generating
+inferences, consider the distinction between propositions and events.
+Propositions are abstract, true or false _information_ objects and as such can
+be _asserted, known, believed, disputed, etc._; whereas events are surely real,
+temporal entities in the world, often with causal consequences -- without them,
+there would be no natural or social world as we know it. Here are two sentences
+that demonstrate this distinction,
+
+(1) _Molly barked last night; that woke up the neighbors._
+
+(2) _Molly barked last night; that's what the neighbors assert._
+
+Note that propositions don't wake neighbors, but events certainly can; and
+events can't be asserted, but propositions certainly can. As such _that_ in the
+two sentences must refer to distinct entities (_that_ in (1) refers to an event
+and _that_ in (2) refers to proposition). Events can have temporal parts at any
+scale, and can physically involve many entities, but propositions cannot.
+Propositions and events are easily confused because they are closely related:
+NL sentences _express_ propositions and at the same time _characterize_ events
+or situations. But an adequate semantic representation must distinguish them,
+thus providing distinct referents for the two instances of the anaphoric _that_
+in the above sentences. For a full discussion see {% cite schubert2000book %}
+and also {% cite zucchi1989phd %}. In general, propositions believed (or
+rejected) by people are central to explaining the _reasons_ for their actions,
+while events interact _causally_. In EL, the propositional referent in the
+second sentence is provided simply by applying the sentence reifying operator,
+`that` to the meaning of the sentence, whereas the event is generated during the
+deindexing process. Basing inferences on sharp distinctions of propositions and
+episodes as described is justified in detail in {% cite schubert2000book %}.
+
+Of course the other semantic types: various subcategories of predicates, kinds
+of actions, kinds of events, general kinds, numbers, collections, predicate
+modifiers, etc. also make distinctions important to inference. The most crucial
+aspect of ULF in supporting justified inferences, however, is the coherent semantic
+composition. So long as antecedents of inference rules operate over fragments
+of well-formed ULF and consequents respect the semantic types during any
+restructuring, we can be certain that conclusions will have coherent semantic
+structures. 
+
+Here are some kinds of inferences we can expect ULFs to support:
+
+### NLog inferences based on generalizations/specializations
+  
+The sentence _"Every NATO member sent troops to Afghanistan"_, together with
+the knowledge that France is a NATO member and that Afghanistan is a country
+entails that _France sent troops to Afghanistan_ and that _France sent troops
+to a country_.
+
+```
+((every.d (member-of.n |NATO|))
+ ((past send.v) (k (plur troop.n))
+                (to.p-arg |Afganistan|)))
+```
+`(|France| ((pres be.v) (member-of.n |NATO|)))`, `(|Afganistan| ((pres be.v) (= (a.d country.n))))`
+
+We won't get into the details of computing contextual polarity here, but simply
+state that _NATO member_ is in positive context and _Afganistan_ is in negative
+context. Positive context allow specializations, whereas negative contexts allow
+generalization of the predicates while retaining truth conditions. So we can
+resolve the right side of `(|France| ((pres be.v) (member-of.n |NATO|)))` into
+the sentence to get
+
+```
+((every.d (= |France|))
+ ((past send.v) (k (plur troop.n))
+                (to.p-arg |Afganistan|)))
+```
+
+then resolve the left hand side of `(|Afganistan| ((pres be.v) (= (a.d
+country.n))))` to get
+
+```
+((every.d (= |France|))
+ ((past send.v) (k (plur troop.n))
+                (to.p-arg (a.d country.n))))
+```
+
+Right now we get the awkward, but not incorrect sentence of _Everything that is
+France sent troops to a country_. We can simplify to just _France sent troops to
+a country_ with an intuitive inference rule `(all x (every.d (= x)) x)`. Simply
+put, if we're quantifying over everything that is logically equal to a particular
+entity, it's just going to be that entity. We can use it to clean up the formula.
+
+```
+(|France| ((past send.v) (k (plur troop.n)) (to.p-arg (a.d country.n))))
+```
+
+Such inferences are within the scope of NLog-based and ULF-based methods, and
+can help in finding inference paths to candidate entailments; but they will not
+be our focus as they rarely seem worthwhile as spontaneous forward inferences
+from sentences in discourse (we are particularly interested in dialogue
+settings).
+
+### NLog inferences based on implicatives
+
+_"She managed to quit smoking"_ entails that _She quit smoking_ (and the
+negation of the premise leads to the opposite conclusion). We already
+demonstrated such inferences in our framework for various headlines {% cite
+stratos2011KEOD %}, such as the inference from _Oprah is shocked that Obama
+gets no respect_ (Fox News 2011) to _Obama gets no respect_. Such inferences
+are surely important -- and immediate -- in language understanding. Here is
+a simplified walk through of generating these inference in ULF to give an idea
+of how this is handled.
+
+We have the formula
+
+(F1) `(she.pro ((past manage.v) (to (quit.v (ka smoke.v)))))`
+
+and an inference rule for _manage_, which we'll call (R1)
+```
+(all_ulfvp w
+  (some x
+    ((x ((past manage.v) (to w)))
+     => (past (x w)))))
+```
+
+We can resolve the term `she.pro` in (F1) to `x` in (R1) and the ULF VP
+predicate `(quit.v (ka smoke.v))` in (F1) to `w` in (R1).  When we run (R1)
+with this resolution, we conclude
+
+`(past (she.pro (quit.v (ka smoke.v))))`
+
+This gives us the meaning we're looking for of _She quit smoking_. The `past`
+is placed at the sentence level for simplicity (and it's not incorrect since
+`past` is actually a sentence level operator anyway), but the tense can also be
+automatically inserted into the VP where it would normally appear in ULF using 
+a more complicated pattern matching procedure in the inference rule.
+
+### Inferences based on attitudinal and communicative verbs
+
+   Some such inferences, for instance for _knowing-that_ and
+   _finding-out-that_, fall under the previous heading, but others do not. For
+   example, _"John denounced Bill as a charlatan"_ entails that _John probably
+   believes that Bill is a charlatan_, that _John asserted to his listeners (or
+   readers) that Bill is a charlatan_, and that _John wanted his listeners (or
+   readers) to believe that Bill is a charlatan_. Such inferences would be hard
+   to capture within NLog, since they are partially probabilistic, require
+   structural elaboration, and depend on constituent types.
    <!-- % [GK]: My guess is that the readers won't necessarily grasp why this isn't part of NLog anyway. -->
-   <!-- %For example, the variant <i>"Mary denounced Bill as well"</i> might  -->
-   <!-- %lead to the inference that <i>Mary believes that Bill is well</i>, -->
-   <!-- %if <i>as well</i> is not recognized as a verb phrase adverbial. -->
- <li> <i>Inferences based on counterfactuals</i>. For example, <i>"If
-   I were rich, I would pay off your debt"</i> and <i>"I wish I were rich"</i>
-   both implicate that <i>the speaker is not rich</i>. This depends 
-   on recognition of the counterfactual form, which is distinguished
-   in ULF.
- <li> <i>Inferences from questions and requests</i>. For example, <i>
-   "When are you getting married"</i> enables the inference that the 
-   addressee will get married (in the foreseeable future), and that 
-   the questioner wants to know the expected date of the event, and
-   expects that the addressee probably knows the answer, and will supply
-   it. Similarly an apparent request such as <i>"Could you close the 
-     door?"</i> implies that the speaker wants the addressee to close the 
-   door, and expects he or she will do so. There are subtleties in the
-   distinction between questions and requests that can be captured 
-   in ULF and made use of.
-</ul>
+   <!-- %For example, the variant _"Mary denounced Bill as well"_ might  -->
+   <!-- %lead to the inference that _Mary believes that Bill is well_, -->
+   <!-- %if _as well_ is not recognized as a verb phrase adverbial. -->
 
+### Inferences based on counterfactuals
+  
+   For example, _"If I were rich, I would pay off your debt"_ and _"I wish I
+   were rich"_ both implicate that _the speaker is not rich_. This depends on
+   recognition of the counterfactual form, which is distinguished in ULF.
 
-        <!--
-        <div class="deets">
-          The ULF Project is aimed at learning a parser for primal logical forms of Episodic Logic (EL)~\ref{..} -- called unscoped logical forms (ULF) -- by obtaining a moderately large hand annotated corpus and training on statistical parser with guidance from knowledge about the formal restrictions of ULFs.
-        
-          
-          <p>
-          </p>
-        </div>
-        -->
+### Inferences from questions and requests
+
+   For example, _"When are you getting married"_ enables the inference that the
+   addressee will get married (in the foreseeable future), and that the
+   questioner wants to know the expected date of the event, and expects that the
+   addressee probably knows the answer, and will supply it. Similarly an
+   apparent request such as _"Could you close the door?"_ implies that the
+   speaker wants the addressee to close the door, and expects he or she will do
+   so. There are subtleties in the distinction between questions and requests
+   that can be captured in ULF and made use of.
+
 [Prev: ULF Intro 2]({{ site.baseurl }}/2019/01/07/ulf-intro-2-role-of-ulf-in-el-interpretation)
-  </div>
-
-
 
