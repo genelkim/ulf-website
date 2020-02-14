@@ -160,7 +160,7 @@ necessary argument of _dial_ for this sentence to make sense.
 
 ## Scope ambiguity
 
-_Every dog sees a bone_
+> Every dog sees a bone
 
 __Does every dog see the same bone?__
 
@@ -207,7 +207,7 @@ helpful in applying ML techniques to determining preferred scopings.
 
 ## Anaphora
 
-_John saw Bob and told him he had to go home_
+> John saw Bob and told him he had to go home
 
 __Who are "him" and "he"?__
 

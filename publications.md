@@ -5,6 +5,18 @@ permalink: /publications/
 ---
 <ul class="publication-list">
   <li>
+    <a href="http://cs.rochester.edu/u/gkim21/papers/ulf-description.pdf">A Type-coherent, Expressive Representation as an Initial Step to Language Understanding</a><br>
+    <b>Gene Louis Kim</b> and Lenhart Schubert<br>
+    <i>(to appear)</i> In <i>Proceedings of the 13th International Conference on Computational Semantics (IWCS), 2019</i><br>
+  </li>
+
+  <li>
+    Towards Parsing Unscoped Episodic Logical Forms with a Cache Transition Parser (Poster Abstract)<br>
+    <b>Gene Louis Kim</b><br>
+    <i>(to appear)</i> In <i>Proceedings of the 32nd International Conference of the Florida Artificial Intelligence Research Society (FLAIRS), 2019</i>
+  </li>
+
+  <li>
     <a href="http://cs.rochester.edu/u/gkim21/papers/sembear-2017-final-submission.pdf">Intension, Attitude, and Tense Annotation in a High-Fidelity Semantic Representation</a><br>
     Gene Kim and Lenhart Schubert<br>
     In <i>Proceedings of the Workshop on Computational Semantics Beyond Events and Roles (SemBEaR), 2017</i><br>

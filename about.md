@@ -30,8 +30,6 @@ University of Rochester.
 - [Muskaan Mendriatta](https://www.linkedin.com/in/muskaan-mendiratta-9a4396152/)
 - [Sophie Sackstein](https://www.linkedin.com/in/sophie-sackstein/)
 
-## Undergraduate Students
-
 # Past
 
 - [Hannah An](https://www.linkedin.com/in/hannah-an/)
