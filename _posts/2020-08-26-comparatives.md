@@ -640,6 +640,13 @@ e.g. `(\lambda x (((-ness big.a) x) = d1))` which puts us back to where we were 
 terms of variables. And the uniqueness constraint we handle by using definite
 quantification (see [ref to Maximality of Degrees]).
 
+## Nominal "more"
+
+TODO: "more than money" example
+
+## Adverbial "more than"
+
+TODO: "more than happy" example
 
 ## Related phenomena that are not handled
 
