@@ -23,16 +23,20 @@ University of Rochester.
 
 ## Undergraduate Researchers
 
-- [Marcus Hill]()
-- [Benjamin Kane](https://www.linkedin.com/in/bkane2/)
+- [Mandar Juvekar](https://www.linkedin.com/in/mandar-juvekar-85b187185)
+- [Junis Ekmekciu](https://www.linkedin.com/in/junis-ekmekciu-84938b197)
+- [Winnie Wan]()
+
+# Past
+
+- [Xin Lu](https://www.linkedin.com/in/xin-lu-b5502b154)
 - [Tianyi Ma](https://www.linkedin.com/in/tianyi-ma-9b2012170/)
 - [Graeme McGuire](https://www.linkedin.com/in/graeme-mcguire-23a62898/)
 - [Muskaan Mendriatta](https://www.linkedin.com/in/muskaan-mendiratta-9a4396152/)
 - [Sophie Sackstein](https://www.linkedin.com/in/sophie-sackstein/)
-
-# Past
-
-- [Hannah An](https://www.linkedin.com/in/hannah-an/)
+- [Marcus Hill](https://www.linkedin.com/in/marcus-hill-409913139)
+- [Benjamin Kane](https://www.cs.rochester.edu/u/bkane2/)
+- [Hannah An](https://hannah0n.github.io/)
 - [Sapphire Becker](https://www.linkedin.com/in/sapphire-becker-8819379b/)
 - [Jordan Caldwell](https://www.linkedin.com/in/jordan-caldwell-b650b2b1/)
 - [Burkay Donderici](https://www.linkedin.com/in/burkaydonderici/)
