@@ -6,7 +6,7 @@ permalink: /publications/
 <ul class="publication-list">
   <li>
     A Transition-based Parser for Unscoped Episodic Logical Forms<br>
-    <i>(under review for EMNLP)</i><br>
+    <i>(under review at IWCS)</i><br>
   </li>
 
   <li>
