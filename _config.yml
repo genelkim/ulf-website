@@ -14,14 +14,14 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Unscoped (Episodic) Logical Forms
-email: gkim21@cs.rochester.edu
+email: genekim@usf.edu
 description: >- # this means to ignore newlines until "baseurl:"
   This is the site main site for the Unscoped Episodic Logical Forms (ULF)
   project.  We link to publications, code, and documentation as well as
   a series on semi-formal blog posts describing ULFs and the underlying
   logical formulation, Episodic Logic, in more depth.
-baseurl: "/u/gkim21/ulf" # the subpath of your site, e.g. /blog
-url: "http://cs.rochester.edu" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/~genekim/ulf-dev" # the subpath of your site, e.g. /blog
+url: "https://cse.usf.edu" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: genelkim
 github_username:  genelkim
 
