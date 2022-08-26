@@ -20,7 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   project.  We link to publications, code, and documentation as well as
   a series on semi-formal blog posts describing ULFs and the underlying
   logical formulation, Episodic Logic, in more depth.
-baseurl: "/~genekim/ulf-dev" # the subpath of your site, e.g. /blog
+baseurl: "/~genekim/ulf" # the subpath of your site, e.g. /blog
 url: "https://cse.usf.edu" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: genelkim
 github_username:  genelkim
